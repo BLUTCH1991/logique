@@ -13,8 +13,6 @@ public class Game {
         gameChose = gameChoice(sc);
         modeChose = gameModeChoice(sc);
 
-        sc.close();
-
         this.redirectToGame(gameChose,modeChose);
     }
 
@@ -69,6 +67,36 @@ public class Game {
             case 2:
                 Mastermind mastermind = new Mastermind();
                 mastermind.initMastermind(modeChose);
+                break;
+        }
+    }
+
+    public void endOfGame(int game, int gameMode, Scanner sc){
+        boolean isNb = false;
+        int nbUser = 0;
+
+        do {
+            System.out.println("(1) Rejouer ?\n(2) Jouer à un autre jeu\n(3) Quitter");
+            try {
+                nbUser = sc.nextInt();
+                if (nbUser > 0 && nbUser < 4){
+                    isNb = true;
+                }
+            } catch (InputMismatchException e){
+                sc.next();
+            }
+        } while(!isNb);
+
+        switch (nbUser){
+            case 1:
+                this.redirectToGame(game,gameMode);
+                break;
+            case 2:
+                this.gameChoice(sc);
+                break;
+            case 3:
+                System.out.println("A bientôt !");
+                System.exit(0);
                 break;
         }
     }
