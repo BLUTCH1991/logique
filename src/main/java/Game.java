@@ -62,6 +62,7 @@ public class Game {
         switch (gameChoice){
             case 1:
                 MoreOrLess moreLess = new MoreOrLess();
+                moreLess.initTabEntries();
                 moreLess.initMoreOrLess(modeChose);
                 break;
             case 2:
