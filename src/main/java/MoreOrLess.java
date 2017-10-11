@@ -1,10 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MoreOrLess extends Game{
 
     private Integer tabEntries[][] = new Integer[4][10];
-    //private ArrayList<Integer> digitEntries = new ArrayList<Integer>();
 
     public boolean checkNb(int nbUser, int nbToFind, int mode){
         boolean isCorrect = true;
@@ -29,8 +27,10 @@ public class MoreOrLess extends Game{
         switch (mode){
             case 1:
                 System.out.println("Proposition : " + nbUser + " -> Réponse : " + result);
+                break;
             case 2:
                 System.out.println("Proposition de l'ordinateur : " + nbUser + " -> Réponse : " + result);
+                break;
         }
         return (isCorrect);
     }
@@ -64,7 +64,7 @@ public class MoreOrLess extends Game{
     private int lastNbPosition(int i){
         int j = 0;
 
-        while (this.tabEntries[i][j] != 10){
+        while (this.tabEntries[i][j] != null && this.tabEntries[i][j] != 10){
             j += 1;
         }
         return (j);
@@ -76,7 +76,6 @@ public class MoreOrLess extends Game{
         boolean isOk = false;
         Random rand = new Random();
 
-        //TODO si c'est + alors on doit regarer le nombre le plus grand de la ligne du tableau
         if (way == 1){
             while (!isOk){
                 isOk = true;
@@ -98,12 +97,7 @@ public class MoreOrLess extends Game{
                 }
             }
         }
-        //System.out.println("Valeur de sizeline : " + sizeLine);
         this.tabEntries[i][sizeLine] = randomNb;
-        System.out.println("<<<<<<<< ARRAY >>>>>>>>>>");
-        printArray(this.tabEntries);
-        System.out.println("<<<<<<<< END >>>>>>>>>>");
-
         return (randomNb);
     }
 
@@ -134,75 +128,22 @@ public class MoreOrLess extends Game{
         return (Integer.parseInt(result.toString()));
     }
 
-    public void defender(){
-        Scanner sc = new Scanner(System.in);
-        int nbUser = this.getNbEntry(sc);
-        Random random = new Random();
-        int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
-        boolean endOfGame = false;
-        int nbTry = 10;
-
-        System.out.println("Vous avez choisi : " + nbUser);
-
-        do {
-            if (nbTry == 10){
-                nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
-            }else{
-                nbComputer = getComputerNb(random,nbUser,nbComputer);
-            }
-            endOfGame = this.checkNb(nbComputer,nbUser,2);
-            nbTry -= 1;
-            if (nbTry == 0){
-                endOfGame = true;
-            }
-        }while (!endOfGame);
-
-        if (nbTry == 0){
-            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
-        }else{
-            System.out.println("L'ordinateur a trouvé la combinaison !\n");
-        }
-        endOfGame(1,2,sc);
-    }
-
-    public void challenger(){
-        Random random = new Random();
-        int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
-        Scanner sc = new Scanner(System.in);
-        int nbUser = 0;
-        int nbTry = 10;
-        boolean endOfGame = false;
-
-        System.out.println("Ton objectif est de trouver la bonne combinaison, en 10 coups maximum\n");
-
-        do {
-            nbUser = getNbEntry(sc);
-            endOfGame = this.checkNb(nbUser,nbToFind,1);
-            nbTry -= 1;
-            if (nbTry == 0){
-                endOfGame = true;
-            }
-        } while(!endOfGame);
-        if (nbTry == 0){
-            System.out.println("Looser !\n");
-        }else{
-            System.out.println("Good game !\n");
-        }
-        endOfGame(1,1,sc);
-    }
-
     public void initMoreOrLess(int modeChose){
         switch (modeChose){
             case 1:
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Challenger !");
-                this.challenger();
+                ChallengerMol challenger = new ChallengerMol();
+                challenger.startChallenger();
                 break;
             case 2:
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Défenseur !");
-                this.defender();
+                DefenderMol defender = new DefenderMol();
+                defender.startDefender();
                 break;
             case 3:
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Duel !");
+                DuelMol duel = new DuelMol();
+                duel.startDuel();
                 break;
         }
     }
