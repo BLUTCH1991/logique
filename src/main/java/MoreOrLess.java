@@ -26,32 +26,18 @@ public class MoreOrLess extends Game{
         }
         switch (mode){
             case 1:
-                System.out.println("Proposition : " + nbUser + " -> Réponse : " + result);
+                System.out.println("Votre proposition : " + nbUser + " -> Indice : " + result);
                 break;
             case 2:
-                System.out.println("Proposition de l'ordinateur : " + nbUser + " -> Réponse : " + result);
+                System.out.println("Proposition de l'ordinateur : " + nbUser + " -> Indice : " + result + "\n");
                 break;
+            case 3:
+                System.out.println("L'ordinateur a joué\n");
         }
         return (isCorrect);
     }
 
-    public int getNbEntry(Scanner sc){
-        int nbUser = 0;
-        boolean isNb = false;
 
-        do {
-            System.out.println("Entrez une combinaison à 4 chiffres (de 1000 à 9999) :\n");
-            try {
-                nbUser = sc.nextInt();
-                if (nbUser <= 9999 && nbUser >= 1000){
-                    isNb = true;
-                }
-            } catch (InputMismatchException e){
-                sc.next();
-            }
-        } while(!isNb);
-        return (nbUser);
-    }
 
     public void initTabEntries(){
         for (int i = 0; i < this.tabEntries.length; i++){
@@ -111,7 +97,7 @@ public class MoreOrLess extends Game{
         for (int i = 0; i < nbUserStr.length();i++){
             digitComputerChoice = 0;
             digit = 0;
-            if (nbUserStr.charAt(i) > nbComputerStr.charAt(i)){
+            if (nbUserStr.charAt(i) != '\0' && nbComputerStr.charAt(i) != '\0' && (nbUserStr.charAt(i) > nbComputerStr.charAt(i))){
                 digit = Character.getNumericValue(nbComputerStr.charAt(i));
                 digitComputerChoice = this.getNewDigit(i,digit,1);
                 result.append(digitComputerChoice);
@@ -145,15 +131,6 @@ public class MoreOrLess extends Game{
                 DuelMol duel = new DuelMol();
                 duel.startDuel();
                 break;
-        }
-    }
-
-    private void printArray(Integer[][] arr) {
-        for (int i = 0; i < arr.length; i++){
-            for (int j = 0; j < arr[i].length; j++){
-                System.out.print(arr[i][j]);
-            }
-            System.out.print("\n");
         }
     }
 }

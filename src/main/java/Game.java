@@ -8,7 +8,7 @@ public class Game {
         int modeChose = 0;
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Welcome in logic games !\n");
+        System.out.println("Bienvenue !\n");
 
         gameChose = gameChoice(sc);
         modeChose = gameModeChoice(sc);
@@ -22,7 +22,7 @@ public class Game {
 
         do {
             System.out.println("Sélectionnez un jeu :\n");
-            System.out.println("(1) Plus ou moins\n(2) Mastermind like\n");
+            System.out.println("(1) Plus ou moins\n(2) Mastermind\n");
             try {
                 gameChose = sc.nextInt();
                 if (gameChose == 1 || gameChose == 2){
@@ -93,12 +93,65 @@ public class Game {
                 this.redirectToGame(game,gameMode);
                 break;
             case 2:
-                this.gameChoice(sc);
+                this.initGame();
                 break;
             case 3:
                 System.out.println("A bientôt !");
                 System.exit(0);
                 break;
+        }
+    }
+
+    public int getNbEntry(Scanner sc){
+        int nbUser = 0;
+        boolean isNb = false;
+
+        do {
+            System.out.println("Entrez une combinaison à 4 chiffres :\n");
+            try {
+                nbUser = sc.nextInt();
+                if (nbUser <= 9999 /*&& nbUser >= 1000*/){
+                    isNb = true;
+                }
+            } catch (InputMismatchException e){
+                sc.next();
+            }
+        } while(!isNb);
+
+        return (nbUser);
+    }
+
+    public String fillOfZero(String newNbUser){
+        int i = 0;
+        int j = 0;
+        StringBuilder nbUserStr = new StringBuilder();
+        //TODO adapter en 4 en fonction du nombre choisi dans les config
+        int nbToFill = 4 - newNbUser.length();
+
+        while (i < nbToFill){
+            nbUserStr.insert(i,'0');
+            i += 1;
+        }
+        while (j < newNbUser.length()){
+            nbUserStr.insert(i,Character.toString(newNbUser.charAt(j)));
+            j += 1;
+            i += 1;
+        }
+        return (nbUserStr.toString());
+    }
+
+    public void printSingleArray(int[] arr){
+        for (int i = 0; i < arr.length; i++){
+            System.out.println(arr[i]);
+        }
+    }
+
+    public void printArray(Integer[][] arr) {
+        for (int i = 0; i < arr.length; i++){
+            for (int j = 0; j < arr[i].length; j++){
+                System.out.print(arr[i][j]);
+            }
+            System.out.print("\n");
         }
     }
 }
