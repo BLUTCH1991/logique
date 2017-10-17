@@ -3,29 +3,27 @@ import java.util.Scanner;
 
 public class Game {
 
+    private int gameChose = 0;
+    private int modeChose = 0;
+
+
     public void initGame(){
-        int gameChose = 0;
-        int modeChose = 0;
         Scanner sc = new Scanner(System.in);
-
         System.out.println("Bienvenue !\n");
-
-        gameChose = gameChoice(sc);
-        modeChose = gameModeChoice(sc);
-
-        this.redirectToGame(gameChose,modeChose);
+        gameChoice(sc);
+        gameModeChoice(sc);
+        redirectToGame();
     }
 
-    private int gameChoice(Scanner sc){
+    private void gameChoice(Scanner sc){
         boolean isNb = false;
-        int gameChose = 0;
 
         do {
             System.out.println("Sélectionnez un jeu :\n");
             System.out.println("(1) Plus ou moins\n(2) Mastermind\n");
             try {
-                gameChose = sc.nextInt();
-                if (gameChose == 1 || gameChose == 2){
+                this.gameChose = sc.nextInt();
+                if (this.gameChose == 1 || this.gameChose == 2){
                     isNb = true;
                 }
             } catch (InputMismatchException e) {
@@ -33,20 +31,17 @@ public class Game {
                 isNb = false;
             }
         } while (!isNb);
-
-        return (gameChose);
     }
 
-    private int gameModeChoice(Scanner sc){
+    private void gameModeChoice(Scanner sc){
         boolean isNb = false;
-        int modeChose = 0;
 
         do {
             System.out.println("Sélectionnez un mode de jeu :\n");
             System.out.println("(1) Challenger\n(2) Défenseur\n(3) Duel");
             try {
-                modeChose = sc.nextInt();
-                if (modeChose == 1 || modeChose == 2 || modeChose == 3){
+                this.modeChose = sc.nextInt();
+                if (this.modeChose == 1 || this.modeChose == 2 || this.modeChose == 3){
                     isNb = true;
                 }
             } catch (InputMismatchException e) {
@@ -54,20 +49,18 @@ public class Game {
                 isNb = false;
             }
         } while (!isNb);
-
-        return (modeChose);
     }
 
-    private void redirectToGame(int gameChoice, int modeChose){
-        switch (gameChoice){
+    private void redirectToGame(){
+        switch (this.gameChose){
             case 1:
                 MoreOrLess moreLess = new MoreOrLess();
                 moreLess.initTabEntries();
-                moreLess.initMoreOrLess(modeChose);
+                moreLess.initMoreOrLess(this.modeChose);
                 break;
             case 2:
                 Mastermind mastermind = new Mastermind();
-                mastermind.initMastermind(modeChose);
+                mastermind.initMastermind(this.modeChose);
                 break;
         }
     }
@@ -75,6 +68,8 @@ public class Game {
     public void endOfGame(int game, int gameMode, Scanner sc){
         boolean isNb = false;
         int nbUser = 0;
+        this.gameChose = game;
+        this.modeChose = gameMode;
 
         do {
             System.out.println("(1) Rejouer ?\n(2) Jouer à un autre jeu\n(3) Quitter");
@@ -90,10 +85,10 @@ public class Game {
 
         switch (nbUser){
             case 1:
-                this.redirectToGame(game,gameMode);
+                redirectToGame();
                 break;
             case 2:
-                this.initGame();
+                initGame();
                 break;
             case 3:
                 System.out.println("A bientôt !");
@@ -110,14 +105,13 @@ public class Game {
             System.out.println("Entrez une combinaison à 4 chiffres :\n");
             try {
                 nbUser = sc.nextInt();
-                if (nbUser <= 9999 /*&& nbUser >= 1000*/){
+                if (nbUser <= 9999){
                     isNb = true;
                 }
             } catch (InputMismatchException e){
                 sc.next();
             }
         } while(!isNb);
-
         return (nbUser);
     }
 
@@ -143,6 +137,15 @@ public class Game {
     public void printSingleArray(int[] arr){
         for (int i = 0; i < arr.length; i++){
             System.out.println(arr[i]);
+        }
+    }
+
+    public void printMultiArray(int[][] arr) {
+        for (int i = 0; i < arr.length; i++){
+            for (int j = 0; j < arr[i].length; j++){
+                System.out.print(arr[i][j]);
+            }
+            System.out.print("\n");
         }
     }
 

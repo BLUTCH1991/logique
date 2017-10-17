@@ -21,6 +21,7 @@ public class ChallengerMol extends MoreOrLess {
                 endOfGame = true;
             }
         } while(!endOfGame);
+
         if (nbTry == 0){
             System.out.println("Vous avez perdu ! La solution était : " + nbToFind + "\n");
         }else{

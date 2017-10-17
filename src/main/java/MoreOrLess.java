@@ -8,7 +8,6 @@ public class MoreOrLess extends Game{
         boolean isCorrect = true;
         String newNbToFind = String.valueOf(nbToFind);
         String newNbUser = String.valueOf(nbUser);
-
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < newNbUser.length();i++){
@@ -36,8 +35,6 @@ public class MoreOrLess extends Game{
         }
         return (isCorrect);
     }
-
-
 
     public void initTabEntries(){
         for (int i = 0; i < this.tabEntries.length; i++){

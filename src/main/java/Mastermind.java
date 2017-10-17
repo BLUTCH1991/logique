@@ -3,6 +3,14 @@ import java.util.Arrays;
 
 public class Mastermind extends Game {
 
+    private int nbPresent = 0;
+    private int nbPut = 0;
+    private int level = 0;
+    private int olNbPresent = 0;
+
+    //TODO adapt whith parameter number
+    private int[][] records = new int[10][5];
+
     public int balanceNbPresent(String nbUserStr, String nbToFindStr, int nbPresent){
         int count = 9;
         int nbInUser = 0;
@@ -43,19 +51,18 @@ public class Mastermind extends Game {
     public boolean checkNb(int nbUser, int nbToFind, int gameMode){
         String nbToFindStr = String.valueOf(nbToFind);
         String nbUserStr = String.valueOf(nbUser);
-        int nbPresent = 0;
-        int nbPut = 0;
+        this.nbPresent = 0;
+        this.nbPut = 0;
         int[] nbFound = new int[nbToFindStr.length()];
         boolean isExist = false;
 
-        //Fill string of 0 if it's not enough length, for example 11 -> 0011
-        if (nbUserStr.length() < 4){
+        if (nbUserStr.length() < nbToFindStr.length()){
            nbUserStr = fillOfZero(nbUserStr);
         }
 
         for (int i = 0; i < nbUserStr.length(); i++){
             if (nbUserStr.charAt(i) == nbToFindStr.charAt(i)){
-                nbPut += 1;
+                this.nbPut += 1;
             }
             //TODO find a good way to empty this tab
             for (int k = 0; k < nbFound.length; k++){
@@ -66,19 +73,125 @@ public class Mastermind extends Game {
                     isExist = checkIfNbExist(nbFound,nbToFindStr.charAt(j));
                     if (!isExist){
                         nbFound[j] = nbToFindStr.charAt(j);
-                        nbPresent += 1;
+                        this.nbPresent += 1;
                     }
                 }
             }
         }
 
-        nbPresent = balanceNbPresent(nbUserStr,nbToFindStr,nbPresent);
+        this.nbPresent = balanceNbPresent(nbUserStr,nbToFindStr,this.nbPresent);
 
-        //TODO masquer cette info
-        System.out.println("Nombre à trouver : " + nbToFind);
-        System.out.println("Votre proposition : " + nbUserStr + " -> indice : " + nbPresent + " présents et " + nbPut + " bien placés\n");
+        System.out.println("\nlevel : " + (this.level - 1) + "\n");
+        printMultiArray(this.records);
+        System.out.println("\nNombre à trouver : " + nbToFind);
 
+        switch (gameMode){
+            case 1:
+                System.out.println("Votre proposition : " + nbUserStr + " -> indice : " +
+                        this.nbPresent + " présents et " + this.nbPut + " bien placés\n");
+            case 2:
+                System.out.println("Proposition de l'ordinateur : " + nbUserStr + " -> indice : " +
+                        this.nbPresent + " présents et " + this.nbPut + " bien placés");
+        }
         return (nbPut == 4);
+    }
+
+    public int getComputerNb(int nbComputer, int nbToFind){
+        int savePosition = 0;
+        int until = 0;
+        String nbToFindStr = String.valueOf(nbToFind);
+        String nbComputerStr = String.valueOf(nbComputer);
+        StringBuilder newNbComputerStr = new StringBuilder();
+
+        if (nbComputerStr.length() < 4){
+            nbComputerStr = fillOfZero(nbComputerStr);
+        }
+        if (nbToFindStr.length() < 4){
+            nbToFindStr = fillOfZero(nbToFindStr);
+        }
+
+        if (this.nbPresent == 0){
+            fillRecords(this.level,nbToFindStr,2);
+            this.level += 1;
+            newNbComputerStr = getFullNbOfLevel(this.level);
+        } else {
+            if (!ifExist(nbToFindStr,this.level)){
+                fillRecords(this.level,nbToFindStr,2);
+            }else{
+                fillRecords(this.level,nbToFindStr,3);
+            }
+            for (int i = 0; i < this.records.length; i++){
+                if (this.records[i][this.records[i].length - 1] > 0){
+                    until = this.records[i][this.records[i].length - 1];
+                    for (int j = 0; j < until; j++){
+                        newNbComputerStr.append(i);
+                        savePosition += 1;
+                    }
+                }
+            }
+            while (savePosition < nbToFindStr.length()){
+                newNbComputerStr.append(this.level);
+                savePosition += 1;
+            }
+            this.level += 1;
+        }
+        return (Integer.parseInt(newNbComputerStr.toString()));
+    }
+
+    public boolean ifExist(String nbToFindStr, int nbToCheck){
+        for (int j = 0; j < nbToFindStr.length(); j++){
+            if (nbToFindStr.charAt(j) != '\0' && Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void initRecordsTab(){
+        for (int i = 0; i < this.records.length; i++){
+            for (int j = 0; j < this.records[i].length; j++){
+                this.records[i][j] = 0;
+            }
+        }
+    }
+
+    public StringBuilder getFullNbOfLevel(int level){
+        StringBuilder str = new StringBuilder();
+
+        for (int i = 0; i < 4; i++){
+            str.append(level);
+        }
+        return (str);
+    }
+
+    /*
+        This function have to fill a line according nb presents numbers
+        0 = Init
+        1 = Good position
+        2 = No existent
+        3 = Potential position
+     */
+    public void fillRecords(int i, String nbToFindStr, int flag){
+        for (int j = 0; j < this.records[i].length - 1; j++){
+            this.records[i][j] = flag;
+        }
+        switch (flag){
+            case 2:
+                this.records[i][this.records[i].length - 1] = 0;
+            case 3:
+                this.records[i][this.records[i].length - 1] = howManyInNb(nbToFindStr,i);
+        }
+    }
+
+    public int howManyInNb(String nbToFindStr, int nbToCheck){
+        int result = 0;
+
+        for (int j = 0; j < nbToFindStr.length(); j++){
+            if (nbToFindStr.charAt(j) != '\0' && Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
+                result += 1;
+            }
+        }
+        return (result);
     }
 
     public void initMastermind(int modeChose){
@@ -90,6 +203,9 @@ public class Mastermind extends Game {
                 break;
             case 2 :
                 System.out.println("Bienvenue sur Mastermind en mode Défenseur !");
+                DefenderMd defender = new DefenderMd();
+                initRecordsTab();
+                defender.startDefenderMd();
                 break;
             case 3:
                 System.out.println("Bienvenue sur Mastermind en mode Duel !");
@@ -97,3 +213,17 @@ public class Mastermind extends Game {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

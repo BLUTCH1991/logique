@@ -5,7 +5,7 @@ public class ChallengerMd extends Mastermind {
 
     public void startChallenger(){
         Random random = new Random();
-        int nbToFind = 4004;//random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
         int nbTry = 12;
@@ -21,6 +21,7 @@ public class ChallengerMd extends Mastermind {
                 endOfGame = true;
             }
         } while(!endOfGame);
+
         if (nbTry == 0){
             System.out.println("Vous avez perdu ! La solution était : " + nbToFind + "\n");
         }else {
