@@ -1,12 +1,13 @@
 import java.lang.reflect.Array;
-import java.util.Arrays;
+import java.util.*;
 
 public class Mastermind extends Game {
 
     private int nbPresent = 0;
     private int nbPut = 0;
     private int level = 0;
-    private int olNbPresent = 0;
+    private int computerAttempt = 0;
+    private ArrayList<String> combinations=new ArrayList<String>();
 
     //TODO adapt whith parameter number
     private int[][] records = new int[10][5];
@@ -81,19 +82,123 @@ public class Mastermind extends Game {
 
         this.nbPresent = balanceNbPresent(nbUserStr,nbToFindStr,this.nbPresent);
 
-        System.out.println("\nlevel : " + (this.level - 1) + "\n");
-        printMultiArray(this.records);
-        System.out.println("\nNombre à trouver : " + nbToFind);
-
         switch (gameMode){
             case 1:
                 System.out.println("Votre proposition : " + nbUserStr + " -> indice : " +
                         this.nbPresent + " présents et " + this.nbPut + " bien placés\n");
             case 2:
+                this.computerAttempt += 1;
                 System.out.println("Proposition de l'ordinateur : " + nbUserStr + " -> indice : " +
                         this.nbPresent + " présents et " + this.nbPut + " bien placés");
         }
         return (nbPut == 4);
+    }
+
+    public int getMinNumber(String nbStr){
+        int nbMin = 10;
+
+        for (int i = 0; i < nbStr.length(); i++){
+            if (Character.getNumericValue(nbStr.charAt(i)) < nbMin){
+                nbMin = Character.getNumericValue(nbStr.charAt(i));
+            }
+        }
+        return (nbMin);
+    }
+
+    public int getMaxNumber(String nbStr){
+        int nbMax = 0;
+
+        for (int i = 0; i < nbStr.length(); i++){
+            if (Character.getNumericValue(nbStr.charAt(i)) > nbMax){
+                nbMax = Character.getNumericValue(nbStr.charAt(i));
+            }
+        }
+        return (nbMax);
+    }
+
+    public boolean checkProposition(String proposition){
+        for (int i = 0; i < this.combinations.size(); i++){
+            if (this.combinations.get(i).equals(proposition)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int[] shuffleArray(int[] array){
+        Random rand = new Random();
+
+        for (int i = 0; i < array.length; i++) {
+            int randomPosition = rand.nextInt(array.length);
+            int temp = array[i];
+            array[i] = array[randomPosition];
+            array[randomPosition] = temp;
+        }
+        return array;
+    }
+
+    public int myRandom(ArrayList alRand, int limit){
+        int i = 0;
+        int j = 0;
+        int nbToReturn = 0;
+
+        if (alRand.size() == 1){
+            return (Integer.valueOf(alRand.get(0).toString()));
+        }
+
+        while (i < limit){
+            j++;
+            i++;
+            if (j == alRand.size() - 1){
+                j = 0;
+            }
+        }
+        nbToReturn = Integer.valueOf(alRand.get(j).toString());
+        alRand.remove(j);
+        return (nbToReturn);
+    }
+
+    public String generateNumber(String nbToFindStr, String nbComputerStr){
+        int nbMin = getMinNumber(nbComputerStr);
+        int nbMax = getMaxNumber(nbComputerStr);
+        Random random = new Random();
+        int nbRand = random.nextInt(nbMax - nbMin + 1) + nbMin;
+        StringBuilder proposition = new StringBuilder();
+        int[] randomArr = new int[nbComputerStr.length()];
+        boolean isPropositionOk = false;
+        ArrayList<Integer> alRand = new ArrayList<Integer>();
+
+        //Create an array with random numbers possibilities
+        for (int i = 0; i < nbComputerStr.length(); i++){
+            randomArr[i] = Character.getNumericValue(nbComputerStr.charAt(i));
+            alRand.add(randomArr[i]);
+        }
+
+        //Generate new combination
+        while (!isPropositionOk){
+            proposition.setLength(0);
+
+            for (int i = 0; i < nbToFindStr.length(); i++){
+                nbRand = myRandom(alRand,random.nextInt(30 - 5 + 1) + 5);
+
+                //Add the random number to the proposition
+                proposition.append(Integer.toString(nbRand));
+            }
+
+            randomArr = shuffleArray(randomArr);
+            for (int i = 0; i < alRand.size(); i++){
+                alRand.remove(i);
+            }
+            for (int i = 0; i < randomArr.length; i++){
+                alRand.add(randomArr[i]);
+            }
+
+            //Check if proposition already exists
+            isPropositionOk = checkProposition(proposition.toString());
+        }
+        //Add proposition to combinations table
+        this.combinations.add(proposition.toString());
+        return (proposition.toString());
     }
 
     public int getComputerNb(int nbComputer, int nbToFind){
@@ -102,12 +207,27 @@ public class Mastermind extends Game {
         String nbToFindStr = String.valueOf(nbToFind);
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder newNbComputerStr = new StringBuilder();
+        Scanner sc = new Scanner(System.in);
 
         if (nbComputerStr.length() < 4){
             nbComputerStr = fillOfZero(nbComputerStr);
         }
         if (nbToFindStr.length() < 4){
             nbToFindStr = fillOfZero(nbToFindStr);
+        }
+
+        if (this.nbPresent == 4){
+            this.combinations.add(nbComputerStr);
+            while (!nbToFindStr.equals(nbComputerStr)){
+                nbComputerStr = generateNumber(nbToFindStr,nbComputerStr);
+                checkNb(Integer.parseInt(nbComputerStr),Integer.parseInt(nbToFindStr),2);
+            }
+            System.out.println("\nL'ordinateur a trouvé la combinaison en " + this.computerAttempt + " coups.");
+            endOfGame(2,2,sc);
+        }
+
+        if (this.level == 9){
+            this.level = 0;
         }
 
         if (this.nbPresent == 0){
