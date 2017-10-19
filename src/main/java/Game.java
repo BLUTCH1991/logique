@@ -38,7 +38,7 @@ public class Game {
 
         do {
             System.out.println("Sélectionnez un mode de jeu :\n");
-            System.out.println("(1) Challenger\n(2) Défenseur\n(3) Duel");
+            System.out.println("(1) Challenger\n(2) Défenseur\n(3) Duel\n");
             try {
                 this.modeChose = sc.nextInt();
                 if (this.modeChose == 1 || this.modeChose == 2 || this.modeChose == 3){

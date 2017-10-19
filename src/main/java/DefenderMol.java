@@ -3,15 +3,29 @@ import java.util.Scanner;
 
 public class DefenderMol extends MoreOrLess {
 
+    public void printEndDefender(int nbTry){
+        if (nbTry == 0){
+            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
+        }else{
+            System.out.println("L'ordinateur a trouvé la combinaison !\n");
+        }
+    }
+
     public void startDefender(){
+        System.out.println("****** But du jeu : L'ordinateur ne doit pas trouver votre combinaison ******\n");
         Scanner sc = new Scanner(System.in);
         int nbUser = getNbEntry(sc);
         Random random = new Random();
         int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
         boolean endOfGame = false;
         int nbTry = 10;
+        String nbUserStr = Integer.toString(nbUser);
 
-        System.out.println("Vous avez choisi : " + nbUser);
+        if (nbUserStr.length() < getNbSize()){
+            nbUserStr = fillOfZero(nbUserStr);
+        }
+
+        System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
             if (nbTry == 10){
@@ -26,11 +40,7 @@ public class DefenderMol extends MoreOrLess {
             }
         }while (!endOfGame);
 
-        if (nbTry == 0){
-            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
-        }else{
-            System.out.println("L'ordinateur a trouvé la combinaison !\n");
-        }
+        printEndDefender(nbTry);
         endOfGame(1,2,sc);
     }
 }

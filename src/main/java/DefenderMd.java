@@ -12,8 +12,8 @@ public class DefenderMd extends Mastermind {
         System.out.println("Vous avez choisi la combinaison : " + nbToFind);
 
         do {
-            nbComputer = getComputerNb(nbComputer,nbToFind);
-            endOfGame = checkNb(nbComputer,nbToFind,2);
+            nbComputer = getComputerNb(nbComputer,nbToFind,2);
+            endOfGame = checkNb(nbComputer,nbToFind,2,2);
             nbTry -= 1;
             if (nbTry == 0){
                 endOfGame = true;

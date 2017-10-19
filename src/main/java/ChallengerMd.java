@@ -15,7 +15,7 @@ public class ChallengerMd extends Mastermind {
 
         do {
             nbUser = getNbEntry(sc);
-            endOfGame = checkNb(nbUser,nbToFind,1);
+            endOfGame = checkNb(nbUser,nbToFind,1,1);
             nbTry -= 1;
             if (nbTry == 0){
                 endOfGame = true;
