@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class DefenderMol extends MoreOrLess {
 
-    public void printEndDefender(int nbTry){
+    public void printEndDefenderMol(int nbTry){
         if (nbTry == 0){
             System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
         }else{
@@ -18,10 +18,10 @@ public class DefenderMol extends MoreOrLess {
         Random random = new Random();
         int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
         boolean endOfGame = false;
-        int nbTry = 10;
+        int nbTry = Property.nbTryMol;
         String nbUserStr = Integer.toString(nbUser);
 
-        if (nbUserStr.length() < getNbSize()){
+        if (nbUserStr.length() < Property.nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr);
         }
 
@@ -40,7 +40,7 @@ public class DefenderMol extends MoreOrLess {
             }
         }while (!endOfGame);
 
-        printEndDefender(nbTry);
+        printEndDefenderMol(nbTry);
         endOfGame(1,2,sc);
     }
 }

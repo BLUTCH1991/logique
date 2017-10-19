@@ -3,8 +3,7 @@ import java.util.Scanner;
 
 public class DuelMd extends Mastermind {
 
-    //TODO adapt with config parameter
-    private int nbTry = 12;
+    private int nbTry = Property.nbTryMd;
 
     public void printEndDuel(int nbToFind, boolean endOfGameComputer){
         if (this.nbTry == 0){

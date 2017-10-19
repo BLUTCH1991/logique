@@ -3,12 +3,24 @@ import java.util.Scanner;
 
 public class DuelMol extends MoreOrLess {
 
+    public void printEndDuelMol(int nbTry, int nbToFind, boolean endOfGameComputer){
+        if (nbTry == 0){
+            System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
+        }else{
+            if (endOfGameComputer){
+                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
+            }else{
+                System.out.println("TVous avez battu l'ordinateur, bien joué !\n");
+            }
+        }
+    }
+
     public void startDuel(){
         Random random = new Random();
         int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
-        int nbTry = 10;
+        int nbTry = Property.nbTryMol;
         int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
@@ -33,15 +45,7 @@ public class DuelMol extends MoreOrLess {
             }
         } while(!endOfGameUser && !endOfGameComputer);
 
-        if (nbTry == 0){
-            System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
-        }else{
-            if (endOfGameComputer){
-                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
-            }else{
-                System.out.println("TVous avez battu l'ordinateur, bien joué !\n");
-            }
-        }
+        printEndDuelMol(nbTry,nbToFind,endOfGameComputer);
         endOfGame(1,3,sc);
     }
 }

@@ -2,10 +2,18 @@ import java.util.Scanner;
 
 public class DefenderMd extends Mastermind {
 
+    public void printEndDefenderMd(int nbTry){
+        if (nbTry == 0){
+            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
+        }else{
+            System.out.println("L'ordinateur a trouvé la combinaison !\n");
+        }
+    }
+
     public void startDefenderMd(){
         Scanner sc = new Scanner(System.in);
         int nbToFind = getNbEntry(sc);
-        int nbTry = 12;
+        int nbTry = Property.nbTryMd;
         int nbComputer = 0;
         boolean endOfGame = false;
 
@@ -20,11 +28,7 @@ public class DefenderMd extends Mastermind {
             }
         } while(!endOfGame);
 
-        if (nbTry == 0){
-            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
-        }else{
-            System.out.println("L'ordinateur a trouvé la combinaison !\n");
-        }
+        printEndDefenderMd(nbTry);
         endOfGame(2,2,sc);
     }
 }

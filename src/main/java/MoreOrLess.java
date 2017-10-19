@@ -2,12 +2,7 @@ import java.util.*;
 
 public class MoreOrLess extends Game{
 
-    private int nbSize = 4;
-    private Integer tabEntries[][] = new Integer[this.nbSize][10];
-
-    public int getNbSize(){
-        return this.nbSize;
-    }
+    private Integer tabEntries[][] = new Integer[Property.nbSizeMol][10];
 
     public void printClue(int mode, String nbUser, String result){
         switch (mode){
@@ -28,10 +23,10 @@ public class MoreOrLess extends Game{
         String nbUserStr = String.valueOf(nbUser);
         StringBuilder result = new StringBuilder();
 
-        if (nbToFindStr.length() < this.nbSize){
+        if (nbToFindStr.length() < Property.nbSizeMol){
             nbToFindStr = fillOfZero(nbToFindStr);
         }
-        if (nbUserStr.length() < this.nbSize){
+        if (nbUserStr.length() < Property.nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr);
         }
 
@@ -106,10 +101,11 @@ public class MoreOrLess extends Game{
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder result = new StringBuilder();
 
-        if (nbUserStr.length() < this.nbSize){
+
+        if (nbUserStr.length() < Property.nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr);
         }
-        if (nbComputerStr.length() < this.nbSize){
+        if (nbComputerStr.length() < Property.nbSizeMol){
             nbComputerStr = fillOfZero(nbComputerStr);
         }
 

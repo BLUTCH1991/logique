@@ -1,11 +1,14 @@
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.InputMismatchException;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Game {
 
     private int gameChose = 0;
     private int modeChose = 0;
-
 
     public void initGame(){
         Scanner sc = new Scanner(System.in);
