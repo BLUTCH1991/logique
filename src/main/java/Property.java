@@ -8,23 +8,21 @@ public class Property extends Game {
     public static int nbSizeMd = 0;
     public static int nbTryMol = 0;
     public static int nbTryMd = 0;
-
+    public static String devMode = "";
 
     public void initProperties(){
         Properties prop = new Properties();
         InputStream input = null;
 
         try {
-
             input = new FileInputStream("./src/main/ressources/config.properties");
-
-            // load a properties file
             prop.load(input);
 
             nbSizeMol = Integer.valueOf(prop.getProperty("nbSizeMol"));
             nbSizeMd = Integer.valueOf(prop.getProperty("nbSizeMd"));
             nbTryMol = Integer.valueOf(prop.getProperty("nbTryMol"));
             nbTryMd = Integer.valueOf(prop.getProperty("nbTryMd"));
+            devMode = prop.getProperty("devMode");
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -39,32 +37,15 @@ public class Property extends Game {
         }
     }
 
-    public void setProperties(){
-        java.util.Properties prop = new java.util.Properties();
-        OutputStream output = null;
-
+    public void setOneProperty(String key, String value){
         try {
-            output = new FileOutputStream("./src/main/ressources/config.properties");
-
-            // set the properties value
-            prop.setProperty("nbSize", "4");
-            prop.setProperty("nbTry", "12");
-
-            // save properties to project root folder
-            prop.store(output, null);
-
-        } catch (IOException io) {
-            io.printStackTrace();
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
+            Properties pop = new Properties();
+            pop.load(new FileInputStream("./src/main/ressources/config.properties"));
+            pop.put(key, value);
+            FileOutputStream output = new FileOutputStream("./src/main/ressources/config.properties");
+            pop.store(output, "");
+        }catch (IOException ex){
+            ex.printStackTrace();
         }
     }
-
 }
