@@ -12,11 +12,8 @@ public class Mastermind extends Game {
     private int level = 0;
     private int computerAttempt = 0;
     private ArrayList<String> combinations=new ArrayList<String>();
-    //TODO adapt with config parameter
-    private int nbSize = 4;
-
-    //TODO adapt whith parameter number
-    private int[][] records = new int[10][5];
+    private int nbSize = Property.nbSizeMd;
+    private int[][] records = new int[10][Property.nbSizeMd + 1];
 
     public int balanceComputerPresent(String nbUserStr, String nbToFindStr, int nbPresentComputer){
         int count = 9;
@@ -93,12 +90,11 @@ public class Mastermind extends Game {
             case 2:
                 this.computerAttempt += 1;
                 System.out.println("Proposition de l'ordinateur : " + nbUserStr + " -> indice : " +
-                        this.nbPresentComputer + " présents et " + this.nbPutComputer + " bien placés\n");
+                        this.nbPresentComputer + " présents et " + this.nbPutComputer + " bien placés");
                 break;
             case 3:
                 this.computerAttempt += 1;
-                System.out.println("L'ordinateur a joué : " + nbUserStr + " -> indice : " +
-                        this.nbPresentComputer + " présents et " + this.nbPutComputer + " bien placés\n");
+                System.out.println("L'ordinateur a joué.\n");
                 break;
         }
     }
@@ -114,11 +110,11 @@ public class Mastermind extends Game {
         boolean isExist = false;
 
         if (nbUserStr.length() < this.nbSize){
-           nbUserStr = fillOfZero(nbUserStr);
+           nbUserStr = fillOfZero(nbUserStr,2);
         }
 
         if (nbToFindStr.length() < this.nbSize){
-            nbToFindStr = fillOfZero(nbToFindStr);
+            nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
         for (int i = 0; i < nbUserStr.length(); i++){
@@ -211,7 +207,7 @@ public class Mastermind extends Game {
         ArrayList<Integer> alRand = new ArrayList<Integer>();
 
         if (nbComputerStr.length() < this.nbSize){
-            nbComputerStr = fillOfZero(nbComputerStr);
+            nbComputerStr = fillOfZero(nbComputerStr,2);
         }
 
         //Create an array with random numbers possibilities
@@ -256,10 +252,10 @@ public class Mastermind extends Game {
         Scanner sc = new Scanner(System.in);
 
         if (nbComputerStr.length() < this.nbSize){
-            nbComputerStr = fillOfZero(nbComputerStr);
+            nbComputerStr = fillOfZero(nbComputerStr,2);
         }
         if (nbToFindStr.length() < this.nbSize){
-            nbToFindStr = fillOfZero(nbToFindStr);
+            nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
         if (gameMode == 3 && this.nbPresentComputer == this.nbSize){
@@ -271,12 +267,19 @@ public class Mastermind extends Game {
             while (!nbToFindStr.equals(nbComputerStr)){
                 nbComputerStr = generateNumber(nbToFindStr,nbComputerStr);
                 checkNb(Integer.parseInt(nbComputerStr),Integer.parseInt(nbToFindStr),2,2);
+                if (this.computerAttempt == Property.nbTryMd){
+                    break;
+                }
             }
-            System.out.println("\nL'ordinateur a trouvé la combinaison en " + this.computerAttempt + " coups.");
+            if (this.computerAttempt == Property.nbTryMd){
+                System.out.println("\nL'ordinateur n'a pas réussi a trouvé la bonne combinaison.");
+            }else{
+                System.out.println("\nL'ordinateur a trouvé la combinaison en " + this.computerAttempt + " coups.");
+            }
             endOfGame(2,2,sc);
         }
 
-        if (this.level == 9){
+        if (this.level == 10){
             this.level = 0;
         }
 
@@ -374,11 +377,11 @@ public class Mastermind extends Game {
         boolean isExist = false;
 
         if (nbComputerStr.length() < this.nbSize){
-            nbComputerStr = fillOfZero(nbComputerStr);
+            nbComputerStr = fillOfZero(nbComputerStr,2);
         }
 
         if (nbToFindStr.length() < this.nbSize){
-            nbToFindStr = fillOfZero(nbToFindStr);
+            nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
         for (int i = 0; i < nbComputerStr.length(); i++){

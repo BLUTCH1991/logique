@@ -100,15 +100,20 @@ public class Game {
         }
     }
 
-    public int getNbEntry(Scanner sc){
+    public int getNbEntry(Scanner sc, int game, int nbMax){
         int nbUser = 0;
         boolean isNb = false;
 
         do {
-            System.out.println("Entrez une combinaison à 4 chiffres :\n");
+            if (game == 1){
+                System.out.println("Entrez une combinaison à " + Property.nbSizeMol + " chiffres :\n");
+            }else{
+                System.out.println("Entrez une combinaison à " + Property.nbSizeMd + " chiffres :\n");
+            }
+
             try {
                 nbUser = sc.nextInt();
-                if (nbUser <= 9999){
+                if (nbUser <= nbMax){
                     isNb = true;
                 }
             } catch (InputMismatchException e){
@@ -118,12 +123,17 @@ public class Game {
         return (nbUser);
     }
 
-    public String fillOfZero(String newNbUser){
+    public String fillOfZero(String newNbUser, int game){
         int i = 0;
         int j = 0;
+        int nbToFill = 0;
         StringBuilder nbUserStr = new StringBuilder();
-        //TODO adapter en 4 en fonction du nombre choisi dans les config
-        int nbToFill = 4 - newNbUser.length();
+
+        if (game == 1){
+            nbToFill = Property.nbSizeMol - newNbUser.length();
+        }else{
+            nbToFill = Property.nbSizeMd - newNbUser.length();
+        }
 
         while (i < nbToFill){
             nbUserStr.insert(i,'0');
@@ -137,28 +147,23 @@ public class Game {
         return (nbUserStr.toString());
     }
 
-    public void printSingleArray(int[] arr){
-        for (int i = 0; i < arr.length; i++){
-            System.out.println(arr[i]);
+    public int getMaxForRand(int limit){
+        StringBuilder nbStr = new StringBuilder();
+
+        for (int i = 0; i < limit; i++){
+            nbStr.append("9");
         }
+        return (Integer.valueOf(nbStr.toString()));
     }
 
-    public void printMultiArray(int[][] arr) {
-        for (int i = 0; i < arr.length; i++){
-            for (int j = 0; j < arr[i].length; j++){
-                System.out.print(arr[i][j]);
-            }
-            System.out.print("\n");
-        }
-    }
+    public int getMinForRand(int limit){
+        StringBuilder nbStr = new StringBuilder();
 
-    public void printArray(Integer[][] arr) {
-        for (int i = 0; i < arr.length; i++){
-            for (int j = 0; j < arr[i].length; j++){
-                System.out.print(arr[i][j]);
-            }
-            System.out.print("\n");
+        nbStr.append("1");
+        for (int i = 0; i < (limit - 1); i++){
+            nbStr.append("0");
         }
+        return (Integer.valueOf(nbStr.toString()));
     }
 }
 

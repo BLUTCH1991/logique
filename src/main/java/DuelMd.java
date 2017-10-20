@@ -18,8 +18,10 @@ public class DuelMd extends Mastermind {
     }
 
     public void startDuel(){
+        int nbMaxRand = getMaxForRand(Property.nbSizeMd);
+        int nbMinRand = getMinForRand(Property.nbSizeMd);
         Random random = new Random();
-        int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
         int nbComputer = 0;
@@ -36,7 +38,7 @@ public class DuelMd extends Mastermind {
         }
 
         do {
-            nbUser = getNbEntry(sc);
+            nbUser = getNbEntry(sc,2, nbMaxRand);
             endOfGameUser = checkNb(nbUser,nbToFind,1,1);
             if (!endOfGameUser){
                 nbPresentComputer = howManyPresentComputer(nbComputer,nbToFind);

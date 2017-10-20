@@ -12,21 +12,23 @@ public class ChallengerMd extends Mastermind {
     }
 
     public void startChallenger(){
+        int nbMaxRand = getMaxForRand(Property.nbSizeMd);
+        int nbMinRand = getMinForRand(Property.nbSizeMd);
         Random random = new Random();
-        int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
         int nbTry = Property.nbTryMd;
         boolean endOfGame = false;
 
-        System.out.println("Votre objectif est de trouver la bonne combinaison, en 12 coups maximum\n");
+        System.out.println("Votre objectif est de trouver la bonne combinaison, en " + nbTry + " coups maximum\n");
 
         if (Property.devMode.equals("true")){
             System.out.println("** Dev mode ** le nombre a trouvé est : " + nbToFind);
         }
 
         do {
-            nbUser = getNbEntry(sc);
+            nbUser = getNbEntry(sc,2, nbMaxRand);
             endOfGame = checkNb(nbUser,nbToFind,1,1);
             nbTry -= 1;
             if (nbTry == 0){

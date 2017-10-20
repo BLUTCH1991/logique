@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.util.*;
 
 public class MoreOrLess extends Game{
@@ -14,6 +16,7 @@ public class MoreOrLess extends Game{
                 break;
             case 3:
                 System.out.println("L'ordinateur a joué\n");
+                break;
         }
     }
 
@@ -24,10 +27,10 @@ public class MoreOrLess extends Game{
         StringBuilder result = new StringBuilder();
 
         if (nbToFindStr.length() < Property.nbSizeMol){
-            nbToFindStr = fillOfZero(nbToFindStr);
+            nbToFindStr = fillOfZero(nbToFindStr,1);
         }
         if (nbUserStr.length() < Property.nbSizeMol){
-            nbUserStr = fillOfZero(nbUserStr);
+            nbUserStr = fillOfZero(nbUserStr,1);
         }
 
         for (int i = 0; i < nbUserStr.length();i++){
@@ -103,11 +106,13 @@ public class MoreOrLess extends Game{
 
 
         if (nbUserStr.length() < Property.nbSizeMol){
-            nbUserStr = fillOfZero(nbUserStr);
+            nbUserStr = fillOfZero(nbUserStr,1);
         }
         if (nbComputerStr.length() < Property.nbSizeMol){
-            nbComputerStr = fillOfZero(nbComputerStr);
+            nbComputerStr = fillOfZero(nbComputerStr,1);
         }
+
+        System.out.println("nb user = " + nbUserStr + " et nbcomputer = " + nbComputerStr);
 
         for (int i = 0; i < nbUserStr.length(); i++){
             if (nbUserStr.charAt(i) > nbComputerStr.charAt(i)){

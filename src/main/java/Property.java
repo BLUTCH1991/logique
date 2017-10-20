@@ -60,7 +60,7 @@ public class Property extends Game {
             System.out.println("\n- MASTERMIND -");
             System.out.println("1) Nombre d'essais : " + prop.getProperty("nbTryMd"));
             System.out.println("2) Nombre de chiffres de la combinaison : " + prop.getProperty("nbSizeMd") + "\n");
-            System.out.println("- Plus ou Moins -");
+            System.out.println("- PLUS OU MOINS -");
             System.out.println("3) Nombre d'essais : " + prop.getProperty("nbTryMol"));
             System.out.println("4) Nombre de chiffres de la combinaison : " +  prop.getProperty("nbSizeMol") + "\n");
             System.out.println("5) Quitter le fichier de configuration\n");

@@ -10,18 +10,23 @@ public class DuelMol extends MoreOrLess {
             if (endOfGameComputer){
                 System.out.println("L'ordinateur a été plus rapide, dommage !\n");
             }else{
-                System.out.println("TVous avez battu l'ordinateur, bien joué !\n");
+                System.out.println("Vous avez battu l'ordinateur, bien joué !\n");
             }
         }
     }
 
     public void startDuel(){
+        int nbMaxRand = getMaxForRand(Property.nbSizeMol);
+        int nbMinRand = getMinForRand(Property.nbSizeMol);
+
+        System.out.println("maxnb = " + nbMaxRand + " et minnb = " + nbMinRand);
+
         Random random = new Random();
-        int nbToFind = random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
         int nbTry = Property.nbTryMol;
-        int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
 
@@ -32,15 +37,15 @@ public class DuelMol extends MoreOrLess {
         }
 
         do {
-            nbUser = getNbEntry(sc);
-            endOfGameUser = this.checkNb(nbUser,nbToFind,1);
+            nbUser = getNbEntry(sc,1, nbMaxRand);
+            endOfGameUser = checkNb(nbUser,nbToFind,1);
             if (!endOfGameUser){
-                if (nbTry == 10){
-                    nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
+                if (nbTry == Property.nbTryMol){
+                    nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
                 }else{
                     nbComputer = getComputerNb(random,nbToFind,nbComputer);
                 }
-                endOfGameComputer = this.checkNb(nbComputer,nbToFind,3);
+                endOfGameComputer = checkNb(nbComputer,nbToFind,3);
             }
             nbTry -= 1;
             if (nbTry == 0){

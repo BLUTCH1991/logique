@@ -11,8 +11,9 @@ public class DefenderMd extends Mastermind {
     }
 
     public void startDefenderMd(){
+        int nbMaxRand = getMaxForRand(Property.nbSizeMd);
         Scanner sc = new Scanner(System.in);
-        int nbToFind = getNbEntry(sc);
+        int nbToFind = getNbEntry(sc,2, nbMaxRand);
         int nbTry = Property.nbTryMd;
         int nbComputer = 0;
         boolean endOfGame = false;

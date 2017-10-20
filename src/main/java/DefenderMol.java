@@ -13,23 +13,25 @@ public class DefenderMol extends MoreOrLess {
 
     public void startDefender(){
         System.out.println("****** But du jeu : L'ordinateur ne doit pas trouver votre combinaison ******\n");
+        int nbMaxRand = getMaxForRand(Property.nbSizeMol);
+        int nbMinRand = getMinForRand(Property.nbSizeMol);
         Scanner sc = new Scanner(System.in);
-        int nbUser = getNbEntry(sc);
+        int nbUser = getNbEntry(sc,1, nbMaxRand);
         Random random = new Random();
-        int nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
+        int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         boolean endOfGame = false;
         int nbTry = Property.nbTryMol;
         String nbUserStr = Integer.toString(nbUser);
 
         if (nbUserStr.length() < Property.nbSizeMol){
-            nbUserStr = fillOfZero(nbUserStr);
+            nbUserStr = fillOfZero(nbUserStr,1);
         }
 
         System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
             if (nbTry == 10){
-                nbComputer = random.nextInt(9999 - 1000 + 1) + 1000;
+                nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
             }else{
                 nbComputer = getComputerNb(random,nbUser,nbComputer);
             }
