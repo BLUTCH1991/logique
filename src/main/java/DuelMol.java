@@ -27,6 +27,10 @@ public class DuelMol extends MoreOrLess {
 
         System.out.println("Votre objectif est de trouver la bonne combinaison avant l'ordinateur !\n");
 
+        if (Property.devMode.equals("true")){
+            System.out.println("** Dev mode ** le nombre a trouvé est : " + nbToFind);
+        }
+
         do {
             nbUser = getNbEntry(sc);
             endOfGameUser = this.checkNb(nbUser,nbToFind,1);

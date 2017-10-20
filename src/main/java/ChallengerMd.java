@@ -21,6 +21,10 @@ public class ChallengerMd extends Mastermind {
 
         System.out.println("Votre objectif est de trouver la bonne combinaison, en 12 coups maximum\n");
 
+        if (Property.devMode.equals("true")){
+            System.out.println("** Dev mode ** le nombre a trouvé est : " + nbToFind);
+        }
+
         do {
             nbUser = getNbEntry(sc);
             endOfGame = checkNb(nbUser,nbToFind,1,1);

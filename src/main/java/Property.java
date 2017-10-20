@@ -10,7 +10,7 @@ public class Property extends Game {
     public static int nbTryMd = 0;
     public static String devMode = "";
 
-    public void initProperties(){
+    public void initProperties() {
         Properties prop = new Properties();
         InputStream input = null;
 
@@ -37,15 +37,44 @@ public class Property extends Game {
         }
     }
 
-    public void setOneProperty(String key, String value){
+    public void setOneProperty(String key, String value) {
         try {
             Properties pop = new Properties();
             pop.load(new FileInputStream("./src/main/ressources/config.properties"));
             pop.put(key, value);
             FileOutputStream output = new FileOutputStream("./src/main/ressources/config.properties");
             pop.store(output, "");
-        }catch (IOException ex){
+        } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public static void getAllProperties() {
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            input = new FileInputStream("./src/main/ressources/config.properties");
+            prop.load(input);
+
+            System.out.println("\n- MASTERMIND -");
+            System.out.println("1) Nombre d'essais : " + prop.getProperty("nbTryMd"));
+            System.out.println("2) Nombre de chiffres de la combinaison : " + prop.getProperty("nbSizeMd") + "\n");
+            System.out.println("- Plus ou Moins -");
+            System.out.println("3) Nombre d'essais : " + prop.getProperty("nbTryMol"));
+            System.out.println("4) Nombre de chiffres de la combinaison : " +  prop.getProperty("nbSizeMol") + "\n");
+            System.out.println("5) Quitter le fichier de configuration\n");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
