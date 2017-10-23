@@ -17,7 +17,7 @@ public class ChallengerMd extends Mastermind {
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
-        int nbUser = 0;
+        int nbUser;
         int nbTry = Property.nbTryMd;
         boolean endOfGame = false;
 

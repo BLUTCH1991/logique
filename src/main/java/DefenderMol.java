@@ -19,7 +19,7 @@ public class DefenderMol extends MoreOrLess {
         int nbUser = getNbEntry(sc,1, nbMaxRand);
         Random random = new Random();
         int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
-        boolean endOfGame = false;
+        boolean endOfGame;
         int nbTry = Property.nbTryMol;
         String nbUserStr = Integer.toString(nbUser);
 
@@ -30,10 +30,10 @@ public class DefenderMol extends MoreOrLess {
         System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
-            if (nbTry == 10){
+            if (nbTry == Property.nbTryMol){
                 nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
             }else{
-                nbComputer = getComputerNb(random,nbUser,nbComputer);
+                nbComputer = getComputerNb(nbUser,nbComputer);
             }
             endOfGame = checkNb(nbComputer,nbUser,2);
             nbTry -= 1;

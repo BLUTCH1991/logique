@@ -1,9 +1,11 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
 public class MoreOrLess extends Game{
 
+    private static final Logger logger = LogManager.getLogger(MoreOrLess.class);
     private Integer tabEntries[][] = new Integer[Property.nbSizeMol][10];
 
     public void printClue(int mode, String nbUser, String result){
@@ -98,12 +100,11 @@ public class MoreOrLess extends Game{
         return (randomNb);
     }
 
-    public int getComputerNb(Random random, int nbUser, int nbComputer){
-        int digit = 0;
+    public int getComputerNb(int nbUser, int nbComputer){
+        int digit;
         String nbUserStr = String.valueOf(nbUser);
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder result = new StringBuilder();
-
 
         if (nbUserStr.length() < Property.nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr,1);
@@ -136,16 +137,22 @@ public class MoreOrLess extends Game{
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Challenger !\n");
                 ChallengerMol challenger = new ChallengerMol();
                 challenger.startChallenger();
+                logger.info("Jeu choisi : Plus ou Moins");
+                logger.info("Mode de jeu choisi : Challenger");
                 break;
             case 2:
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Défenseur !\n");
                 DefenderMol defender = new DefenderMol();
                 defender.startDefender();
+                logger.info("Jeu choisi : Plus ou Moins");
+                logger.info("Mode de jeu choisi : Défenseur");
                 break;
             case 3:
                 System.out.println("Bienvenue dans le jeu plus ou moins en mode Duel !\n");
                 DuelMol duel = new DuelMol();
                 duel.startDuel();
+                logger.info("Jeu choisi : Plus ou Moins");
+                logger.info("Mode de jeu choisi : Duel");
                 break;
         }
     }

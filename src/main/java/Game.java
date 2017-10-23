@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +10,7 @@ import java.util.Scanner;
 
 public class Game {
 
+    private static final Logger logger = LogManager.getLogger(Game.class);
     private int gameChose = 0;
     private int modeChose = 0;
 
@@ -95,6 +99,7 @@ public class Game {
                 break;
             case 3:
                 System.out.println("A bientôt !");
+                logger.info("Lancement de l'application");
                 System.exit(0);
                 break;
         }

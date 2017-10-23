@@ -16,7 +16,7 @@ public class DefenderMd extends Mastermind {
         int nbToFind = getNbEntry(sc,2, nbMaxRand);
         int nbTry = Property.nbTryMd;
         int nbComputer = 0;
-        boolean endOfGame = false;
+        boolean endOfGame;
 
         System.out.println("Vous avez choisi la combinaison : " + nbToFind);
 

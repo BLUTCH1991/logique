@@ -1,10 +1,13 @@
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Array;
 import java.util.*;
 
 public class Mastermind extends Game {
 
+    private static final Logger logger = LogManager.getLogger(Mastermind.class);
     private int nbPresent = 0;
     private int nbPresentComputer = 0;
     private int nbPut = 0;
@@ -17,8 +20,7 @@ public class Mastermind extends Game {
 
     public int balanceComputerPresent(String nbUserStr, String nbToFindStr, int nbPresentComputer){
         int count = 9;
-        int nbInUser = 0;
-        int nbInFind = 0;
+        int nbInUser, nbInFind;
 
         while (count >= 0){
             nbInFind = 0;
@@ -43,8 +45,7 @@ public class Mastermind extends Game {
 
     public void balanceNbPresent(String nbUserStr, String nbToFindStr, int user){
         int count = 9;
-        int nbInUser = 0;
-        int nbInFind = 0;
+        int nbInUser, nbInFind;
 
         while (count >= 0){
             nbInFind = 0;
@@ -70,7 +71,7 @@ public class Mastermind extends Game {
         }
     }
 
-    public boolean checkIfNbExist(int[] nbFound, int nb){
+    public boolean isNbInTab(int[] nbFound, int nb){
         boolean isExist = false;
 
         for (int k = 0; k < nbFound.length; k++) {
@@ -107,12 +108,10 @@ public class Mastermind extends Game {
         this.nbPut = 0;
         this.nbPutComputer = 0;
         int[] nbFound = new int[this.nbSize];
-        boolean isExist = false;
 
         if (nbUserStr.length() < this.nbSize){
            nbUserStr = fillOfZero(nbUserStr,2);
         }
-
         if (nbToFindStr.length() < this.nbSize){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
@@ -132,8 +131,7 @@ public class Mastermind extends Game {
             }
             for (int j = 0; j < nbToFindStr.length(); j++){
                 if (nbToFindStr.charAt(j) != '\0' && nbToFindStr.charAt(j) == nbUserStr.charAt(i)){
-                    isExist = checkIfNbExist(nbFound,nbToFindStr.charAt(j));
-                    if (!isExist){
+                    if (!isNbInTab(nbFound,nbToFindStr.charAt(j))){
                         nbFound[j] = nbToFindStr.charAt(j);
                         if (user == 1){
                             this.nbPresent += 1;
@@ -147,13 +145,7 @@ public class Mastermind extends Game {
         }
         balanceNbPresent(nbUserStr,nbToFindStr,user);
         printClue(gameMode,nbUserStr);
-
-        if (user == 1){
-            return (this.nbPut == this.nbSize);
-        }else{
-            return (this.nbPutComputer == this.nbSize);
-        }
-
+        return (user == 1) ? this.nbPut == this.nbSize : this.nbPutComputer == this.nbSize;
     }
 
     public boolean checkProposition(String proposition){
@@ -167,10 +159,12 @@ public class Mastermind extends Game {
 
     public static int[] shuffleArray(int[] array){
         Random rand = new Random();
+        int randomPosition = 0;
+        int temp = 0;
 
         for (int i = 0; i < array.length; i++) {
-            int randomPosition = rand.nextInt(array.length);
-            int temp = array[i];
+            randomPosition = rand.nextInt(array.length);
+            temp = array[i];
             array[i] = array[randomPosition];
             array[randomPosition] = temp;
         }
@@ -227,10 +221,15 @@ public class Mastermind extends Game {
                 proposition.append(Integer.toString(nbRand));
             }
 
+            //Get a new random array
             randomArr = shuffleArray(randomArr);
+
+            //Empty the list
             for (int i = 0; i < alRand.size(); i++){
                 alRand.remove(i);
             }
+
+            //Create new list from array
             for (int i = 0; i < randomArr.length; i++){
                 alRand.add(randomArr[i]);
             }
@@ -243,9 +242,24 @@ public class Mastermind extends Game {
         return (proposition.toString());
     }
 
+    public void sizeReached(String nbComputerStr, String nbToFindStr, Scanner sc){
+        while (!nbToFindStr.equals(nbComputerStr)){
+            nbComputerStr = generateNumber(nbToFindStr,nbComputerStr);
+            checkNb(Integer.parseInt(nbComputerStr),Integer.parseInt(nbToFindStr),2,2);
+            if (this.computerAttempt == Property.nbTryMd){
+                break;
+            }
+        }
+        if (this.computerAttempt == Property.nbTryMd){
+            System.out.println("\nL'ordinateur n'a pas réussi a trouvé la bonne combinaison.");
+        }else{
+            System.out.println("\nL'ordinateur a trouvé la combinaison en " + this.computerAttempt + " coups.");
+        }
+        endOfGame(2,2,sc);
+    }
+
     public int getComputerNb(int nbComputer, int nbToFind, int gameMode){
         int savePosition = 0;
-        int until = 0;
         String nbToFindStr = String.valueOf(nbToFind);
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder newNbComputerStr = new StringBuilder();
@@ -258,25 +272,11 @@ public class Mastermind extends Game {
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
-        if (gameMode == 3 && this.nbPresentComputer == this.nbSize){
+        if (this.nbPresentComputer == this.nbSize){
             this.combinations.add(nbComputerStr);
-        }
-
-        if (gameMode == 2 && this.nbPresentComputer == this.nbSize){
-            this.combinations.add(nbComputerStr);
-            while (!nbToFindStr.equals(nbComputerStr)){
-                nbComputerStr = generateNumber(nbToFindStr,nbComputerStr);
-                checkNb(Integer.parseInt(nbComputerStr),Integer.parseInt(nbToFindStr),2,2);
-                if (this.computerAttempt == Property.nbTryMd){
-                    break;
-                }
+            if (gameMode == 2){
+                sizeReached(nbComputerStr,nbToFindStr,sc);
             }
-            if (this.computerAttempt == Property.nbTryMd){
-                System.out.println("\nL'ordinateur n'a pas réussi a trouvé la bonne combinaison.");
-            }else{
-                System.out.println("\nL'ordinateur a trouvé la combinaison en " + this.computerAttempt + " coups.");
-            }
-            endOfGame(2,2,sc);
         }
 
         if (this.level == 10){
@@ -296,8 +296,7 @@ public class Mastermind extends Game {
             }
             for (int i = 0; i < this.records.length; i++){
                 if (this.records[i][this.records[i].length - 1] > 0){
-                    until = this.records[i][this.records[i].length - 1];
-                    for (int j = 0; j < until; j++){
+                    for (int j = 0; j < this.records[i][this.records[i].length - 1]; j++){
                         newNbComputerStr.append(i);
                         savePosition += 1;
                     }
@@ -314,7 +313,7 @@ public class Mastermind extends Game {
 
     public boolean ifExist(String nbToFindStr, int nbToCheck){
         for (int j = 0; j < nbToFindStr.length(); j++){
-            if (nbToFindStr.charAt(j) != '\0' && Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
+            if (Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
                 return true;
             }
         }
@@ -361,7 +360,7 @@ public class Mastermind extends Game {
         int result = 0;
 
         for (int j = 0; j < nbToFindStr.length(); j++){
-            if (nbToFindStr.charAt(j) != '\0' && Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
+            if (Character.getNumericValue(nbToFindStr.charAt(j)) == nbToCheck){
                 result += 1;
             }
         }
@@ -372,14 +371,12 @@ public class Mastermind extends Game {
         int result = 0;
         String nbToFindStr = String.valueOf(nbToFind);
         String nbComputerStr = String.valueOf(nbComputer);
-
         int[] nbFound = new int[this.nbSize];
         boolean isExist = false;
 
         if (nbComputerStr.length() < this.nbSize){
             nbComputerStr = fillOfZero(nbComputerStr,2);
         }
-
         if (nbToFindStr.length() < this.nbSize){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
@@ -390,8 +387,8 @@ public class Mastermind extends Game {
                 nbFound[k] = 42;
             }
             for (int j = 0; j < nbToFindStr.length(); j++){
-                if (nbToFindStr.charAt(j) != '\0' && nbToFindStr.charAt(j) == nbComputerStr.charAt(i)){
-                    isExist = checkIfNbExist(nbFound,nbToFindStr.charAt(j));
+                if (nbToFindStr.charAt(j) == nbComputerStr.charAt(i)){
+                    isExist = isNbInTab(nbFound,nbToFindStr.charAt(j));
                     if (!isExist){
                         nbFound[j] = nbToFindStr.charAt(j);
                         result += 1;
@@ -409,18 +406,24 @@ public class Mastermind extends Game {
                 System.out.println("Bienvenue sur Mastermind en mode Challenger !");
                 ChallengerMd challenger = new ChallengerMd();
                 challenger.startChallenger();
+                logger.info("Jeu choisi : Mastermind");
+                logger.info("Mode de jeu choisi : Challenger");
                 break;
             case 2 :
                 System.out.println("Bienvenue sur Mastermind en mode Défenseur !");
                 DefenderMd defender = new DefenderMd();
                 initRecordsTab();
                 defender.startDefenderMd();
+                logger.info("Jeu choisi : Mastermind");
+                logger.info("Mode de jeu choisi : Défenseur");
                 break;
             case 3:
                 System.out.println("Bienvenue sur Mastermind en mode Duel !");
                 DuelMd duel = new DuelMd();
                 initRecordsTab();
                 duel.startDuel();
+                logger.info("Jeu choisi : Mastermind");
+                logger.info("Mode de jeu choisi : Duel");
                 break;
         }
     }

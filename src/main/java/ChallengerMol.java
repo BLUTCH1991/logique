@@ -17,9 +17,9 @@ public class ChallengerMol extends MoreOrLess {
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
-        int nbUser = 0;
+        int nbUser;
         int nbTry = Property.nbTryMol;
-        boolean endOfGame = false;
+        boolean endOfGame;
 
         System.out.println("Votre objectif est de trouver la bonne combinaison, en " + nbTry + " coups maximum\n");
 

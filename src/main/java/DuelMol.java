@@ -18,9 +18,6 @@ public class DuelMol extends MoreOrLess {
     public void startDuel(){
         int nbMaxRand = getMaxForRand(Property.nbSizeMol);
         int nbMinRand = getMinForRand(Property.nbSizeMol);
-
-        System.out.println("maxnb = " + nbMaxRand + " et minnb = " + nbMinRand);
-
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
@@ -43,7 +40,7 @@ public class DuelMol extends MoreOrLess {
                 if (nbTry == Property.nbTryMol){
                     nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
                 }else{
-                    nbComputer = getComputerNb(random,nbToFind,nbComputer);
+                    nbComputer = getComputerNb(nbToFind,nbComputer);
                 }
                 endOfGameComputer = checkNb(nbComputer,nbToFind,3);
             }
