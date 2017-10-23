@@ -18,7 +18,7 @@ public class DuelMd extends Mastermind {
     }
 
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMd);
+        int nbMaxRand = getMaxForRand(Property.nbSizeMd,usableNbs.length - 1);
         int nbMinRand = getMinForRand(Property.nbSizeMd);
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
@@ -34,7 +34,7 @@ public class DuelMd extends Mastermind {
         System.out.println("******  Votre objectif est de trouver la bonne combinaison avant l'ordinateur ******\n");
 
         if (Property.devMode.equals("true")){
-            System.out.println("** Dev mode ** le nombre a trouvé est : " + nbToFind);
+            System.out.println("** Dev mode ** le nombre a trouver est : " + nbToFind);
         }
 
         do {

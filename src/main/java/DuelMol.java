@@ -16,7 +16,7 @@ public class DuelMol extends MoreOrLess {
     }
 
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMol);
+        int nbMaxRand = getMaxForRand(Property.nbSizeMol,9);
         int nbMinRand = getMinForRand(Property.nbSizeMol);
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
@@ -30,7 +30,7 @@ public class DuelMol extends MoreOrLess {
         System.out.println("Votre objectif est de trouver la bonne combinaison avant l'ordinateur !\n");
 
         if (Property.devMode.equals("true")){
-            System.out.println("** Dev mode ** le nombre a trouvé est : " + nbToFind);
+            System.out.println("** Dev mode ** le nombre a trouver est : " + nbToFind);
         }
 
         do {

@@ -1,11 +1,7 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.InputMismatchException;
-import java.util.Properties;
 import java.util.Scanner;
 
 public class Game {
@@ -152,11 +148,11 @@ public class Game {
         return (nbUserStr.toString());
     }
 
-    public int getMaxForRand(int limit){
+    public int getMaxForRand(int limit, int nbMax){
         StringBuilder nbStr = new StringBuilder();
 
         for (int i = 0; i < limit; i++){
-            nbStr.append("9");
+            nbStr.append(Integer.toString(nbMax));
         }
         return (Integer.valueOf(nbStr.toString()));
     }

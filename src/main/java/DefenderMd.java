@@ -11,14 +11,19 @@ public class DefenderMd extends Mastermind {
     }
 
     public void startDefenderMd(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMd);
+        int nbMaxRand = getMaxForRand(Property.nbSizeMd,usableNbs.length - 1);
         Scanner sc = new Scanner(System.in);
-        int nbToFind = getNbEntry(sc,2, nbMaxRand);
+        int nbToFind = getNbEntryMd(sc,nbMaxRand,usableNbs);
+        String nbToFindStr = String.valueOf(nbToFind);
         int nbTry = Property.nbTryMd;
         int nbComputer = 0;
         boolean endOfGame;
 
-        System.out.println("Vous avez choisi la combinaison : " + nbToFind);
+        if (nbToFindStr.length() < Property.nbSizeMd){
+            nbToFindStr = fillOfZero(nbToFindStr,2);
+        }
+
+        System.out.println("Vous avez choisi la combinaison : " + nbToFindStr);
 
         do {
             nbComputer = getComputerNb(nbComputer,nbToFind,2);

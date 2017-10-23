@@ -42,12 +42,18 @@ public class DevMode {
                 logger.info("La taille de combinaison pour le Mastermind est maintenant à : " + newValue);
                 break;
             case 3:
+                System.out.println("Veuillez saisir une nouvelle valeur (4 à 10) pour le nombre de chiffres utilisables du Mastermind :");
+                newValue = Integer.toString(getUserChoice(sc,nbUser,4,10));
+                prop.setOneProperty("nbDifferentDigit",newValue);
+                logger.info("Le nombre d'essais pour le Plus ou Moins est maintenant à : " + newValue);
+                break;
+            case 4:
                 System.out.println("Veuillez saisir une nouvelle valeur (1 à 100) pour le nombre d'essais du Plus ou Moins :");
                 newValue = Integer.toString(getUserChoice(sc,nbUser,1,100));
                 prop.setOneProperty("nbTryMol",newValue);
                 logger.info("Le nombre d'essais pour le Plus ou Moins est maintenant à : " + newValue);
                 break;
-            case 4:
+            case 5:
                 System.out.println("Veuillez saisir une nouvelle valeur (4 à 10) pour la taille de combinaison du Plus ou Moins :");
                 newValue = Integer.toString(getUserChoice(sc,nbUser,4,10));
                 prop.setOneProperty("nbSizeMol",newValue);
@@ -64,8 +70,8 @@ public class DevMode {
         while (!quit){
             Property.getAllProperties();
             System.out.println("Sélectionnez le paramètre souhaité en entrant le nombre correspondant : ");
-            nbUser = getUserChoice(sc,nbUser,1,5);
-            if (nbUser < 5){
+            nbUser = getUserChoice(sc,nbUser,1,6);
+            if (nbUser < 6){
                 setNewProperty(sc,nbUser,prop);
             }else {
                 quit = true;

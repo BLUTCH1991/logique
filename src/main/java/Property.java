@@ -9,6 +9,7 @@ public class Property extends Game {
     public static int nbTryMol = 0;
     public static int nbTryMd = 0;
     public static String devMode = "";
+    public static int nbDifferentDigit = 0;
 
     public void initProperties() {
         Properties prop = new Properties();
@@ -22,6 +23,7 @@ public class Property extends Game {
             nbSizeMd = Integer.valueOf(prop.getProperty("nbSizeMd"));
             nbTryMol = Integer.valueOf(prop.getProperty("nbTryMol"));
             nbTryMd = Integer.valueOf(prop.getProperty("nbTryMd"));
+            nbDifferentDigit = Integer.valueOf(prop.getProperty("nbDifferentDigit"));
             devMode = prop.getProperty("devMode");
 
         } catch (IOException ex) {
@@ -59,11 +61,12 @@ public class Property extends Game {
 
             System.out.println("\n- MASTERMIND -");
             System.out.println("1) Nombre d'essais : " + prop.getProperty("nbTryMd"));
-            System.out.println("2) Nombre de chiffres de la combinaison : " + prop.getProperty("nbSizeMd") + "\n");
+            System.out.println("2) Nombre de chiffres de la combinaison : " + prop.getProperty("nbSizeMd"));
+            System.out.println("3) Nombre de chiffres utilisables : " + prop.getProperty("nbDifferentDigit") + "\n");
             System.out.println("- PLUS OU MOINS -");
-            System.out.println("3) Nombre d'essais : " + prop.getProperty("nbTryMol"));
-            System.out.println("4) Nombre de chiffres de la combinaison : " +  prop.getProperty("nbSizeMol") + "\n");
-            System.out.println("5) Quitter le fichier de configuration\n");
+            System.out.println("4) Nombre d'essais : " + prop.getProperty("nbTryMol"));
+            System.out.println("5) Nombre de chiffres de la combinaison : " +  prop.getProperty("nbSizeMol") + "\n");
+            System.out.println("6) Quitter le fichier de configuration\n");
 
         } catch (IOException ex) {
             ex.printStackTrace();

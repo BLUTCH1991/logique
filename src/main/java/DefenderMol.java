@@ -13,7 +13,7 @@ public class DefenderMol extends MoreOrLess {
 
     public void startDefender(){
         System.out.println("****** But du jeu : L'ordinateur ne doit pas trouver votre combinaison ******\n");
-        int nbMaxRand = getMaxForRand(Property.nbSizeMol);
+        int nbMaxRand = getMaxForRand(Property.nbSizeMol,9);
         int nbMinRand = getMinForRand(Property.nbSizeMol);
         Scanner sc = new Scanner(System.in);
         int nbUser = getNbEntry(sc,1, nbMaxRand);

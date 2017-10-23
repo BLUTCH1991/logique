@@ -1,8 +1,6 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Mastermind extends Game {
@@ -17,6 +15,19 @@ public class Mastermind extends Game {
     private ArrayList<String> combinations=new ArrayList<String>();
     private int nbSize = Property.nbSizeMd;
     private int[][] records = new int[10][Property.nbSizeMd + 1];
+    protected int[] usableNbs = new int[Property.nbDifferentDigit];
+
+
+    public int getCustomRandom(){
+        Random random = new Random();
+        int max = usableNbs.length - 1;
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < Property.nbSizeMd; i++){
+            result.append(random.nextInt(max+1));
+        }
+        return Integer.valueOf(result.toString());
+    }
 
     public int balanceComputerPresent(String nbUserStr, String nbToFindStr, int nbPresentComputer){
         int count = 9;
@@ -400,7 +411,53 @@ public class Mastermind extends Game {
         return (result);
     }
 
+    public boolean isUsableNb(int[] usableNbs, String nbUserStr){
+        for (int i = 0; i < nbUserStr.length(); i++){
+            if (Character.getNumericValue(nbUserStr.charAt(i)) > usableNbs.length - 1){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public int getNbEntryMd(Scanner sc, int nbMax, int[] usableNbs){
+        int nbUser = 0;
+        boolean isNb = false;
+
+        do {
+            System.out.print("Entrez une combinaison à " + Property.nbSizeMd + " chiffres ");
+            System.out.print("avec les chiffres suivants : ");
+            printUsableNbs();
+            try {
+                nbUser = sc.nextInt();
+                if (nbUser <= nbMax && isUsableNb(usableNbs,Integer.toString(nbUser))){
+                    isNb = true;
+                }
+            } catch (InputMismatchException e){
+                sc.next();
+            }
+        } while(!isNb);
+        return (nbUser);
+    }
+
+    public void printUsableNbs(){
+        for (int i = 0; i < Property.nbDifferentDigit; i++){
+            System.out.print(i);
+            if (i < Property.nbDifferentDigit - 1){
+                System.out.print(" - ");
+            }
+        }
+        System.out.println("\n");
+    }
+
+    public void initUsableNbs(){
+        for (int i = 0; i < Property.nbDifferentDigit - 1; i++){
+            usableNbs[i] = i;
+        }
+    }
+
     public void initMastermind(int modeChose){
+        initUsableNbs();
         switch (modeChose){
             case 1:
                 System.out.println("Bienvenue sur Mastermind en mode Challenger !");
