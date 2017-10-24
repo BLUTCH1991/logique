@@ -5,8 +5,28 @@ import java.util.*;
 
 public class MoreOrLess extends Game{
 
+    private Property prop = super.getProp();
+    private int nbSizeMol = prop.getNbSizeMol();
+    private int nbTryMol = prop.getNbTryMol();
+    private String devMode = prop.getDevMode();
     private static final Logger logger = LogManager.getLogger(MoreOrLess.class);
-    private Integer tabEntries[][] = new Integer[Property.nbSizeMol][10];
+    private Integer tabEntries[][] = new Integer[nbSizeMol][10];
+
+    /*************** GETTERS *********************/
+
+    public int getNbSizeMol() {
+        return nbSizeMol;
+    }
+
+    public int getNbTryMol() {
+        return nbTryMol;
+    }
+
+    public String getDevMode(){
+        return devMode;
+    }
+
+    /**************** METHODS *********************/
 
     public void printClue(int mode, String nbUser, String result){
         switch (mode){
@@ -28,10 +48,10 @@ public class MoreOrLess extends Game{
         String nbUserStr = String.valueOf(nbUser);
         StringBuilder result = new StringBuilder();
 
-        if (nbToFindStr.length() < Property.nbSizeMol){
+        if (nbToFindStr.length() < nbSizeMol){
             nbToFindStr = fillOfZero(nbToFindStr,1);
         }
-        if (nbUserStr.length() < Property.nbSizeMol){
+        if (nbUserStr.length() < nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr,1);
         }
 
@@ -60,7 +80,7 @@ public class MoreOrLess extends Game{
         }
     }
 
-    private int lastNbPosition(int i){
+    public int lastNbPosition(int i){
         int j = 0;
 
         while (this.tabEntries[i][j] != null && this.tabEntries[i][j] != 10){
@@ -106,14 +126,12 @@ public class MoreOrLess extends Game{
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder result = new StringBuilder();
 
-        if (nbUserStr.length() < Property.nbSizeMol){
+        if (nbUserStr.length() < nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr,1);
         }
-        if (nbComputerStr.length() < Property.nbSizeMol){
+        if (nbComputerStr.length() < nbSizeMol){
             nbComputerStr = fillOfZero(nbComputerStr,1);
         }
-
-        System.out.println("nb user = " + nbUserStr + " et nbcomputer = " + nbComputerStr);
 
         for (int i = 0; i < nbUserStr.length(); i++){
             if (nbUserStr.charAt(i) > nbComputerStr.charAt(i)){

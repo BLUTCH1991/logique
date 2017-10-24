@@ -1,14 +1,40 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Game {
+public class Game{
 
     private static final Logger logger = LogManager.getLogger(Game.class);
     private int gameChose = 0;
     private int modeChose = 0;
+    private static Property prop;
+
+    /******************* GETTERS ********************/
+
+    public Property getProp(){
+        return prop;
+    }
+
+    /****************** METHODS **********************/
+
+    public void initApp(String args[]){
+        logger.info("Lancement de l'application");
+        prop = new Property();
+
+        //Check if software is running in dev mode
+        if (args.length > 0 && args[0].equals("42")){
+            prop.setOneProperty("devMode", "true");
+            DevMode dev = new DevMode();
+            dev.initDevMode();
+        }else{
+            prop.setOneProperty("devMode", "false");
+        }
+
+        //Fill global variables with file properties
+        prop.initProperties();
+        initGame();
+    }
 
     public void initGame(){
         Scanner sc = new Scanner(System.in);
@@ -26,7 +52,7 @@ public class Game {
             System.out.println("(1) Plus ou moins\n(2) Mastermind\n");
             try {
                 this.gameChose = sc.nextInt();
-                if (this.gameChose == 1 || this.gameChose == 2){
+                if (this.gameChose > 0 && this.gameChose < 3){
                     isNb = true;
                 }
             } catch (InputMismatchException e) {
@@ -44,7 +70,7 @@ public class Game {
             System.out.println("(1) Challenger\n(2) Défenseur\n(3) Duel\n");
             try {
                 this.modeChose = sc.nextInt();
-                if (this.modeChose == 1 || this.modeChose == 2 || this.modeChose == 3){
+                if (this.modeChose > 0 && this.modeChose < 4){
                     isNb = true;
                 }
             } catch (InputMismatchException e) {
@@ -68,6 +94,22 @@ public class Game {
         }
     }
 
+    public void executeEndOfGameChoice(int nbUser){
+        switch (nbUser){
+            case 1:
+                redirectToGame();
+                break;
+            case 2:
+                initGame();
+                break;
+            case 3:
+                System.out.println("A bientôt !");
+                logger.info("Fermeture de l'application");
+                System.exit(0);
+                break;
+        }
+    }
+
     public void endOfGame(int game, int gameMode, Scanner sc){
         boolean isNb = false;
         int nbUser = 0;
@@ -78,27 +120,13 @@ public class Game {
             System.out.println("(1) Rejouer ?\n(2) Jouer à un autre jeu\n(3) Quitter");
             try {
                 nbUser = sc.nextInt();
-                if (nbUser > 0 && nbUser < 4){
-                    isNb = true;
-                }
+                isNb = (nbUser > 0 && nbUser < 4);
             } catch (InputMismatchException e){
                 sc.next();
             }
         } while(!isNb);
 
-        switch (nbUser){
-            case 1:
-                redirectToGame();
-                break;
-            case 2:
-                initGame();
-                break;
-            case 3:
-                System.out.println("A bientôt !");
-                logger.info("Lancement de l'application");
-                System.exit(0);
-                break;
-        }
+        executeEndOfGameChoice(nbUser);
     }
 
     public int getNbEntry(Scanner sc, int game, int nbMax){
@@ -107,20 +135,19 @@ public class Game {
 
         do {
             if (game == 1){
-                System.out.println("Entrez une combinaison à " + Property.nbSizeMol + " chiffres :\n");
+                System.out.println("Entrez une combinaison à " + prop.getNbSizeMol() + " chiffres :\n");
             }else{
-                System.out.println("Entrez une combinaison à " + Property.nbSizeMd + " chiffres :\n");
+                System.out.println("Entrez une combinaison à " + prop.getNbSizeMd() + " chiffres :\n");
             }
 
             try {
                 nbUser = sc.nextInt();
-                if (nbUser <= nbMax){
-                    isNb = true;
-                }
+                isNb = (nbUser <= nbMax);
             } catch (InputMismatchException e){
                 sc.next();
             }
         } while(!isNb);
+
         return (nbUser);
     }
 
@@ -130,11 +157,7 @@ public class Game {
         int nbToFill = 0;
         StringBuilder nbUserStr = new StringBuilder();
 
-        if (game == 1){
-            nbToFill = Property.nbSizeMol - newNbUser.length();
-        }else{
-            nbToFill = Property.nbSizeMd - newNbUser.length();
-        }
+        nbToFill = (game == 1) ? prop.getNbSizeMol() - newNbUser.length() : prop.getNbSizeMd() - newNbUser.length();
 
         while (i < nbToFill){
             nbUserStr.insert(i,'0');

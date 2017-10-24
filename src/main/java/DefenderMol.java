@@ -3,6 +3,9 @@ import java.util.Scanner;
 
 public class DefenderMol extends MoreOrLess {
 
+    private int nbSizeMol = getNbSizeMol();
+    private int nbTryMol = getNbTryMol();
+
     public void printEndDefenderMol(int nbTry){
         if (nbTry == 0){
             System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
@@ -13,28 +16,24 @@ public class DefenderMol extends MoreOrLess {
 
     public void startDefender(){
         System.out.println("****** But du jeu : L'ordinateur ne doit pas trouver votre combinaison ******\n");
-        int nbMaxRand = getMaxForRand(Property.nbSizeMol,9);
-        int nbMinRand = getMinForRand(Property.nbSizeMol);
+        int nbMaxRand = getMaxForRand(nbSizeMol,9);
+        int nbMinRand = getMinForRand(nbSizeMol);
         Scanner sc = new Scanner(System.in);
         int nbUser = getNbEntry(sc,1, nbMaxRand);
         Random random = new Random();
         int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         boolean endOfGame;
-        int nbTry = Property.nbTryMol;
+        int nbTry = nbTryMol;
         String nbUserStr = Integer.toString(nbUser);
 
-        if (nbUserStr.length() < Property.nbSizeMol){
+        if (nbUserStr.length() < nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr,1);
         }
 
         System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
-            if (nbTry == Property.nbTryMol){
-                nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
-            }else{
-                nbComputer = getComputerNb(nbUser,nbComputer);
-            }
+            nbComputer = (nbTry == nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbUser,nbComputer);
             endOfGame = checkNb(nbComputer,nbUser,2);
             nbTry -= 1;
             if (nbTry == 0){

@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public class ChallengerMd extends Mastermind {
 
+    private int nbSizeMd = getNbSizeMd();
+    private int nbTryMd = getNbTryMd();
+    private int[] usableNbs = getUsableNbs();
+
     public void printEndChallengerMd(int nbTry, int nbToFind){
         if (nbTry == 0){
             System.out.println("Vous avez perdu ! La solution était : " + nbToFind + "\n");
@@ -11,21 +15,20 @@ public class ChallengerMd extends Mastermind {
     }
 
     public void startChallenger(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMd,usableNbs.length - 1);
+        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
         int nbToFind = getCustomRandom();
         String nbToFindStr = String.valueOf(nbToFind);
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
-        int nbTry = Property.nbTryMd;
+        int nbTry = nbTryMd;
         boolean endOfGame = false;
 
-        if (nbToFindStr.length() < Property.nbSizeMd){
+        if (nbToFindStr.length() < nbSizeMd){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
         System.out.println("Votre objectif est de trouver la bonne combinaison, en " + nbTry + " coups maximum\n");
-
-        if (Property.devMode.equals("true")){
+        if (super.getDevMode().equals("true")){
             System.out.println("** Dev mode ** le nombre a trouver est : " + nbToFindStr + "\n");
         }
 

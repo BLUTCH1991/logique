@@ -3,10 +3,12 @@ import java.util.Scanner;
 
 public class DuelMd extends Mastermind {
 
-    private int nbTry = Property.nbTryMd;
+    private int nbSizeMd = getNbSizeMd();
+    private int nbTryMd = getNbTryMd();
+    private int[] usableNbs = getUsableNbs();
 
     public void printEndDuel(int nbToFind, boolean endOfGameComputer){
-        if (this.nbTry == 0){
+        if (nbTryMd == 0){
             System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
         }else{
             if (endOfGameComputer){
@@ -18,8 +20,8 @@ public class DuelMd extends Mastermind {
     }
 
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMd,usableNbs.length - 1);
-        int nbMinRand = getMinForRand(Property.nbSizeMd);
+        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
+        int nbMinRand = getMinForRand(nbSizeMd);
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
@@ -32,8 +34,7 @@ public class DuelMd extends Mastermind {
         int nbPresentComputer = 0;
 
         System.out.println("******  Votre objectif est de trouver la bonne combinaison avant l'ordinateur ******\n");
-
-        if (Property.devMode.equals("true")){
+        if (super.getDevMode().equals("true")){
             System.out.println("** Dev mode ** le nombre a trouver est : " + nbToFind);
         }
 
@@ -51,8 +52,8 @@ public class DuelMd extends Mastermind {
                     endOfGameComputer = checkNb(nbComputer,nbToFind,3,2);
                 }
             }
-            this.nbTry -= 1;
-            if (this.nbTry == 0){
+            nbTryMd -= 1;
+            if (nbTryMd == 0){
                 endOfGameUser = true;
                 endOfGameComputer = true;
             }

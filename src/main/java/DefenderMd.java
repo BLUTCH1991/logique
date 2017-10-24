@@ -2,6 +2,10 @@ import java.util.Scanner;
 
 public class DefenderMd extends Mastermind {
 
+    private int nbSizeMd = getNbSizeMd();
+    private int nbTryMd = getNbTryMd();
+    private int[] usableNbs = getUsableNbs();
+
     public void printEndDefenderMd(int nbTry){
         if (nbTry == 0){
             System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
@@ -11,15 +15,15 @@ public class DefenderMd extends Mastermind {
     }
 
     public void startDefenderMd(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMd,usableNbs.length - 1);
+        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
         Scanner sc = new Scanner(System.in);
         int nbToFind = getNbEntryMd(sc,nbMaxRand,usableNbs);
         String nbToFindStr = String.valueOf(nbToFind);
-        int nbTry = Property.nbTryMd;
+        int nbTry = nbTryMd;
         int nbComputer = 0;
         boolean endOfGame;
 
-        if (nbToFindStr.length() < Property.nbSizeMd){
+        if (nbToFindStr.length() < nbSizeMd){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 

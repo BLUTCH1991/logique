@@ -3,6 +3,9 @@ import java.util.Scanner;
 
 public class DuelMol extends MoreOrLess {
 
+    private int nbSizeMol = getNbSizeMol();
+    private int nbTryMol = getNbTryMol();
+
     public void printEndDuelMol(int nbTry, int nbToFind, boolean endOfGameComputer){
         if (nbTry == 0){
             System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
@@ -16,20 +19,20 @@ public class DuelMol extends MoreOrLess {
     }
 
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(Property.nbSizeMol,9);
-        int nbMinRand = getMinForRand(Property.nbSizeMol);
+        int nbMaxRand = getMaxForRand(nbSizeMol,9);
+        int nbMinRand = getMinForRand(nbSizeMol);
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
-        int nbTry = Property.nbTryMol;
+        int nbTry = nbTryMol;
         int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
 
         System.out.println("Votre objectif est de trouver la bonne combinaison avant l'ordinateur !\n");
 
-        if (Property.devMode.equals("true")){
+        if (super.getDevMode().equals("true")){
             System.out.println("** Dev mode ** le nombre a trouver est : " + nbToFind);
         }
 
@@ -37,11 +40,7 @@ public class DuelMol extends MoreOrLess {
             nbUser = getNbEntry(sc,1, nbMaxRand);
             endOfGameUser = checkNb(nbUser,nbToFind,1);
             if (!endOfGameUser){
-                if (nbTry == Property.nbTryMol){
-                    nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
-                }else{
-                    nbComputer = getComputerNb(nbToFind,nbComputer);
-                }
+                nbComputer = (nbTry == nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbToFind,nbComputer);
                 endOfGameComputer = checkNb(nbComputer,nbToFind,3);
             }
             nbTry -= 1;

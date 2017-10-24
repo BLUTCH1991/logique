@@ -1,15 +1,42 @@
 import java.io.*;
 import java.util.Properties;
 
+public class Property {
 
-public class Property extends Game {
+    private int nbSizeMol = 0;
+    private int nbSizeMd = 0;
+    private int nbTryMol = 0;
+    private int nbTryMd = 0;
+    private String devMode = "";
+    private int nbDifferentDigit = 0;
 
-    public static int nbSizeMol = 0;
-    public static int nbSizeMd = 0;
-    public static int nbTryMol = 0;
-    public static int nbTryMd = 0;
-    public static String devMode = "";
-    public static int nbDifferentDigit = 0;
+    /**************** GETTERS ********************/
+
+    public int getNbSizeMd() {
+        return nbSizeMd;
+    }
+
+    public int getNbTryMd() {
+        return nbTryMd;
+    }
+
+    public int getNbSizeMol() {
+        return nbSizeMol;
+    }
+
+    public int getNbTryMol() {
+        return nbTryMol;
+    }
+
+    public String getDevMode() {
+        return devMode;
+    }
+
+    public int getNbDifferentDigit() {
+        return nbDifferentDigit;
+    }
+
+    /**************** METHODS ***********************/
 
     public void initProperties() {
         Properties prop = new Properties();
