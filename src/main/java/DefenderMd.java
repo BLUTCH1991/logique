@@ -15,15 +15,15 @@ public class DefenderMd extends Mastermind {
     }
 
     public void startDefenderMd(){
-        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
+        int nbMaxRand = getMaxForRand(this.nbSizeMd,this.usableNbs.length - 1);
         Scanner sc = new Scanner(System.in);
-        int nbToFind = getNbEntryMd(sc,nbMaxRand,usableNbs);
+        int nbToFind = getNbEntryMd(sc,nbMaxRand,this.usableNbs);
         String nbToFindStr = String.valueOf(nbToFind);
-        int nbTry = nbTryMd;
+        int nbTry = this.nbTryMd;
         int nbComputer = 0;
         boolean endOfGame;
 
-        if (nbToFindStr.length() < nbSizeMd){
+        if (nbToFindStr.length() < this.nbSizeMd){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 

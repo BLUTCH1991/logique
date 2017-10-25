@@ -15,15 +15,15 @@ public class ChallengerMd extends Mastermind {
     }
 
     public void startChallenger(){
-        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
+        int nbMaxRand = getMaxForRand(this.nbSizeMd,this.usableNbs.length - 1);
         int nbToFind = getCustomRandom();
         String nbToFindStr = String.valueOf(nbToFind);
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
-        int nbTry = nbTryMd;
+        int nbTry = this.nbTryMd;
         boolean endOfGame = false;
 
-        if (nbToFindStr.length() < nbSizeMd){
+        if (nbToFindStr.length() < this.nbSizeMd){
             nbToFindStr = fillOfZero(nbToFindStr,2);
         }
 
@@ -33,7 +33,7 @@ public class ChallengerMd extends Mastermind {
         }
 
         do {
-            nbUser = getNbEntryMd(sc,nbMaxRand,usableNbs);
+            nbUser = getNbEntryMd(sc,nbMaxRand,this.usableNbs);
             endOfGame = checkNb(nbUser,nbToFind,1,1);
             nbTry -= 1;
             if (nbTry == 0){

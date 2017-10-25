@@ -7,8 +7,8 @@ public class DuelMd extends Mastermind {
     private int nbTryMd = getNbTryMd();
     private int[] usableNbs = getUsableNbs();
 
-    public void printEndDuel(int nbToFind, boolean endOfGameComputer){
-        if (nbTryMd == 0){
+    public void printEndDuel(int nbToFind, boolean endOfGameComputer, int nbTry){
+        if (nbTry == 0){
             System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
         }else{
             if (endOfGameComputer){
@@ -32,6 +32,7 @@ public class DuelMd extends Mastermind {
         String nbToFindStr = String.valueOf(nbToFind);
         String nbComputerStr = String.valueOf(nbComputer);
         int nbPresentComputer = 0;
+        int nbTry = this.nbTryMd;
 
         System.out.println("******  Votre objectif est de trouver la bonne combinaison avant l'ordinateur ******\n");
         if (super.getDevMode().equals("true")){
@@ -42,7 +43,7 @@ public class DuelMd extends Mastermind {
             nbUser = getNbEntry(sc,2, nbMaxRand);
             endOfGameUser = checkNb(nbUser,nbToFind,1,1);
             if (!endOfGameUser){
-                nbPresentComputer = howManyPresentComputer(nbComputer,nbToFind);
+                nbPresentComputer = countNbPresComputer(nbComputer,nbToFind);
                 if (nbPresentComputer == 4){
                     nbComputerStr = generateNumber(nbToFindStr,Integer.toString(nbComputer));
                     nbComputer = Integer.parseInt(nbComputerStr);
@@ -52,14 +53,14 @@ public class DuelMd extends Mastermind {
                     endOfGameComputer = checkNb(nbComputer,nbToFind,3,2);
                 }
             }
-            nbTryMd -= 1;
-            if (nbTryMd == 0){
+            nbTry -= 1;
+            if (nbTry== 0){
                 endOfGameUser = true;
                 endOfGameComputer = true;
             }
         } while(!endOfGameUser && !endOfGameComputer);
 
-        printEndDuel(nbToFind,endOfGameComputer);
+        printEndDuel(nbToFind,endOfGameComputer,nbTry);
         endOfGame(2,3,sc);
     }
 }

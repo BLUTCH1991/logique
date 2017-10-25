@@ -15,13 +15,13 @@ public class ChallengerMol extends MoreOrLess {
     }
 
     public void startChallenger(){
-        int nbMaxRand = getMaxForRand(nbSizeMol,9);
-        int nbMinRand = getMinForRand(nbSizeMol);
+        int nbMaxRand = getMaxForRand(this.nbSizeMol,9);
+        int nbMinRand = getMinForRand(this.nbSizeMol);
         Random random = new Random();
         int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
         Scanner sc = new Scanner(System.in);
         int nbUser;
-        int nbTry = nbTryMol;
+        int nbTry = this.nbTryMol;
         boolean endOfGame;
 
         System.out.println("Votre objectif est de trouver la bonne combinaison, en " + nbTry + " coups maximum\n");

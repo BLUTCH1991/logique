@@ -1,3 +1,7 @@
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -9,31 +13,32 @@ public class Property {
     private int nbTryMd = 0;
     private String devMode = "";
     private int nbDifferentDigit = 0;
+    private static final Logger logger = LogManager.getLogger(Property.class);
 
     /**************** GETTERS ********************/
 
     public int getNbSizeMd() {
-        return nbSizeMd;
+        return this.nbSizeMd;
     }
 
     public int getNbTryMd() {
-        return nbTryMd;
+        return this.nbTryMd;
     }
 
     public int getNbSizeMol() {
-        return nbSizeMol;
+        return this.nbSizeMol;
     }
 
     public int getNbTryMol() {
-        return nbTryMol;
+        return this.nbTryMol;
     }
 
     public String getDevMode() {
-        return devMode;
+        return this.devMode;
     }
 
     public int getNbDifferentDigit() {
-        return nbDifferentDigit;
+        return this.nbDifferentDigit;
     }
 
     /**************** METHODS ***********************/
@@ -46,12 +51,12 @@ public class Property {
             input = new FileInputStream("./src/main/ressources/config.properties");
             prop.load(input);
 
-            nbSizeMol = Integer.valueOf(prop.getProperty("nbSizeMol"));
-            nbSizeMd = Integer.valueOf(prop.getProperty("nbSizeMd"));
-            nbTryMol = Integer.valueOf(prop.getProperty("nbTryMol"));
-            nbTryMd = Integer.valueOf(prop.getProperty("nbTryMd"));
-            nbDifferentDigit = Integer.valueOf(prop.getProperty("nbDifferentDigit"));
-            devMode = prop.getProperty("devMode");
+            this.nbSizeMol = Integer.valueOf(prop.getProperty("nbSizeMol"));
+            this.nbSizeMd = Integer.valueOf(prop.getProperty("nbSizeMd"));
+            this.nbTryMol = Integer.valueOf(prop.getProperty("nbTryMol"));
+            this.nbTryMd = Integer.valueOf(prop.getProperty("nbTryMd"));
+            this.nbDifferentDigit = Integer.valueOf(prop.getProperty("nbDifferentDigit"));
+            this.devMode = prop.getProperty("devMode");
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -74,6 +79,7 @@ public class Property {
             FileOutputStream output = new FileOutputStream("./src/main/ressources/config.properties");
             pop.store(output, "");
         } catch (IOException ex) {
+            logger.error("Error on setOneProperty()");
             ex.printStackTrace();
         }
     }
@@ -96,6 +102,7 @@ public class Property {
             System.out.println("6) Quitter le fichier de configuration\n");
 
         } catch (IOException ex) {
+            logger.error("Error on getAllProperties()");
             ex.printStackTrace();
         } finally {
             if (input != null) {
