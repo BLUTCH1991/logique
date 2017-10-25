@@ -35,9 +35,10 @@ public class DefenderMol extends MoreOrLess {
         do {
             nbComputer = (nbTry == this.nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbUser,nbComputer);
             if (nbTry == this.nbTryMol){
+                initTestedNbs();
                 putFirstTestedNb(Integer.toString(nbComputer));
             }
-            endOfGame = checkNb(nbComputer,nbUser,2);
+            endOfGame = checkNbComputer(nbComputer,nbUser,2);
             nbTry -= 1;
             if (nbTry == 0){
                 endOfGame = true;

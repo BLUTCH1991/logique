@@ -10,7 +10,8 @@ public class MoreOrLess extends Game{
     private int nbTryMol = prop.getNbTryMol();
     private String devMode = prop.getDevMode();
     private static final Logger logger = LogManager.getLogger(MoreOrLess.class);
-    private Integer testedNbs[][] = new Integer[nbSizeMol][10];
+    private int[][] testedNbs = new int[nbSizeMol][10];
+    private char[][] nbSigns = new char[nbSizeMol][10];
 
     /*************** GETTERS *********************/
 
@@ -48,6 +49,40 @@ public class MoreOrLess extends Game{
         }
     }
 
+    public boolean checkNbComputer(int nbUser, int nbToFind, int mode){
+        boolean isCorrect = true;
+        String nbToFindStr = String.valueOf(nbToFind);
+        String nbUserStr = String.valueOf(nbUser);
+        StringBuilder result = new StringBuilder();
+
+        //Example : get 131 but nb size = 4 so generate 0131
+        if (nbToFindStr.length() < this.nbSizeMol){
+            nbToFindStr = fillOfZero(nbToFindStr,1);
+        }
+        if (nbUserStr.length() < this.nbSizeMol){
+            nbUserStr = fillOfZero(nbUserStr,1);
+        }
+
+        //Generate clue
+        for (int i = 0; i < nbUserStr.length();i++){
+            if (nbToFindStr.charAt(i) == nbUserStr.charAt(i)){
+                result.append("=");
+            }
+            if (nbToFindStr.charAt(i) > nbUserStr.charAt(i)){
+                result.append("+");
+                this.nbSigns[i][lastNbPosition(i)-1] = '+';
+                isCorrect = false;
+            }
+            if (nbToFindStr.charAt(i) < nbUserStr.charAt(i)){
+                result.append("-");
+                this.nbSigns[i][lastNbPosition(i)-1] = '-';
+                isCorrect = false;
+            }
+        }
+        printClue(mode,nbUserStr,result.toString());
+        return (isCorrect);
+    }
+
     public boolean checkNb(int nbUser, int nbToFind, int mode){
         boolean isCorrect = true;
         String nbToFindStr = String.valueOf(nbToFind);
@@ -83,7 +118,7 @@ public class MoreOrLess extends Game{
     public int lastNbPosition(int i){
         int j = 0;
 
-        while (this.testedNbs[i][j] != null){
+        while (this.testedNbs[i][j] != 10){
             j += 1;
         }
         return (j);
@@ -97,11 +132,10 @@ public class MoreOrLess extends Game{
 
         while (!isOk){
             isOk = true;
-            //randomNb = rand.nextInt(9 - (digit+1) + 1) + (digit+1);
             randomNb = rand.nextInt(max - min + 1) + min;
             //Look is digit already tested
             for (int j = 0; j < this.testedNbs[i].length; j++){
-                if (this.testedNbs[i][j] != null && randomNb == this.testedNbs[i][j]){
+                if (this.testedNbs[i][j] != '\0' && randomNb == this.testedNbs[i][j]){
                     isOk = false;
                 }
             }
@@ -111,11 +145,47 @@ public class MoreOrLess extends Game{
         return (randomNb);
     }
 
+    public int findMaxSign(int index){
+        int[] tmp = new int[this.testedNbs[index].length];
+        int res = 10;
+        int k = 0;
+
+        for (int j = 0; j < this.nbSigns[index].length; j++){
+            tmp[k] = (this.nbSigns[index][j] == '-') ? this.testedNbs[index][j] : 10;
+            k++;
+        }
+        for (int j = 0; j < tmp.length; j++){
+            if (tmp[j] != 10 && res > tmp[j]){
+                res = tmp[j];
+            }
+        }
+        return (res < 10 ? res : 9);
+    }
+
+    public int findMinSign(int index){
+        int[] tmp = new int[this.testedNbs[index].length];
+        int res = 0;
+        int k = 0;
+
+        for (int j = 0; j < this.nbSigns[index].length; j++){
+            tmp[k] = (this.nbSigns[index][j] == '+') ? this.testedNbs[index][j] : 10;
+            k++;
+        }
+        for (int j = 0; j < tmp.length; j++){
+            if (tmp[j] != 10 && res < tmp[j]){
+                res = tmp[j];
+            }
+        }
+        return res;
+    }
+
     public int getComputerNb(int nbUser, int nbComputer){
         int digit;
         String nbUserStr = String.valueOf(nbUser);
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder result = new StringBuilder();
+        int min = 0;
+        int max = 0;
 
         //Example : get 131 but nb size = 4 so generate 0131
         if (nbUserStr.length() < this.nbSizeMol){
@@ -127,19 +197,29 @@ public class MoreOrLess extends Game{
 
         //Generate a new digit when necessary and add it to string result
         for (int i = 0; i < nbUserStr.length(); i++){
+            max = findMaxSign(i);
+            min = findMinSign(i);
             if (nbUserStr.charAt(i) > nbComputerStr.charAt(i)){
                 digit = Character.getNumericValue(nbComputerStr.charAt(i));
-                result.append(getNewDigit(i,digit,digit+1,9));
+                result.append(getNewDigit(i,digit,min,max));
             }
             if (nbUserStr.charAt(i) < nbComputerStr.charAt(i)){
                 digit = Character.getNumericValue(nbComputerStr.charAt(i));
-                result.append(getNewDigit(i,digit,0,digit));
+                result.append(getNewDigit(i,digit,min,max));
             }
             if (nbUserStr.charAt(i) == nbComputerStr.charAt(i)){
                 result.append(nbUserStr.charAt(i));
             }
         }
         return (Integer.parseInt(result.toString()));
+    }
+
+    public void initTestedNbs(){
+        for (int i = 0; i < this.testedNbs.length;i++){
+            for (int j = 0; j < this.testedNbs[i].length;j++){
+                this.testedNbs[i][j] = 10;
+            }
+        }
     }
 
     public void initMoreOrLess(int modeChose){

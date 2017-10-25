@@ -26,7 +26,7 @@ public class DuelMol extends MoreOrLess {
         Scanner sc = new Scanner(System.in);
         int nbUser = 0;
         int nbTry = this.nbTryMol;
-        int nbComputer = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
+        int nbComputer = 0;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
 
@@ -41,7 +41,11 @@ public class DuelMol extends MoreOrLess {
             endOfGameUser = checkNb(nbUser,nbToFind,1);
             if (!endOfGameUser){
                 nbComputer = (nbTry == this.nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbToFind,nbComputer);
-                endOfGameComputer = checkNb(nbComputer,nbToFind,3);
+                if (nbTry == this.nbTryMol){
+                    initTestedNbs();
+                    putFirstTestedNb(Integer.toString(nbComputer));
+                }
+                endOfGameComputer = checkNbComputer(nbComputer,nbToFind,3);
             }
             nbTry -= 1;
             if (nbTry == 0){
