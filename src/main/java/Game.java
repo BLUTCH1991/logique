@@ -8,18 +8,41 @@ public class Game{
     private static final Logger logger = LogManager.getLogger(Game.class);
     private int gameChose = 0;
     private int modeChose = 0;
-    private static Property prop;
+    private Property prop = Property.getInstance();
 
-    /******************* GETTERS ********************/
-
-    public Property getProp(){
-        return prop;
-    }
 
     /****************** METHODS **********************/
 
-    public void executeEndOfGameChoice(int nbUser){
-        switch (nbUser){
+    public void printEndChallenger(int nbTry, long nbToFind){
+        if (nbTry == 0){
+            System.out.println("Vous avez perdu ! La solution était : " + nbToFind + "\n");
+        }else {
+            System.out.println("C'est gagné ! Bien joué !\n");
+        }
+    }
+
+    public void printEndDefender(int nbTry){
+        if (nbTry == 0){
+            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
+        }else{
+            System.out.println("L'ordinateur a trouvé la combinaison !\n");
+        }
+    }
+
+    public void printEndDuel(long nbToFind, boolean endOfGameComputer, int nbTry){
+        if (nbTry == 0){
+            System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
+        }else{
+            if (endOfGameComputer){
+                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
+            }else{
+                System.out.println("Vous avez battu l'ordinateur, bien joué !\n");
+            }
+        }
+    }
+
+    public void executeEndOfGameChoice(int userChoice){
+        switch (userChoice){
             case 1:
                 redirectToGame();
                 break;
@@ -36,36 +59,36 @@ public class Game{
 
     public void endOfGame(int game, int gameMode, Scanner sc){
         boolean isNb = false;
-        int nbUser = 0;
+        int userChoice = 0;
         this.gameChose = game;
         this.modeChose = gameMode;
 
         do {
             System.out.println("(1) Rejouer ?\n(2) Jouer à un autre jeu\n(3) Quitter");
             try {
-                nbUser = sc.nextInt();
-                isNb = (nbUser > 0 && nbUser < 4);
+                userChoice = sc.nextInt();
+                isNb = (userChoice > 0 && userChoice < 4);
             } catch (InputMismatchException e){
                 sc.next();
             }
         } while(!isNb);
 
-        executeEndOfGameChoice(nbUser);
+        executeEndOfGameChoice(userChoice);
     }
 
-    public int getNbEntry(Scanner sc, int game, int nbMax){
-        int nbUser = 0;
+    public long getNbEntry(Scanner sc, int game, long nbMax){
+        long nbUser = 0;
         boolean isNb = false;
 
         do {
             if (game == 1){
-                System.out.println("Entrez une combinaison à " + prop.getNbSizeMol() + " chiffres :\n");
+                System.out.println("Entrez une combinaison à " + this.prop.getNbSizeMol() + " chiffres :\n");
             }else{
-                System.out.println("Entrez une combinaison à " + prop.getNbSizeMd() + " chiffres :\n");
+                System.out.println("Entrez une combinaison à " + this.prop.getNbSizeMd() + " chiffres :\n");
             }
 
             try {
-                nbUser = sc.nextInt();
+                nbUser = sc.nextLong();
                 isNb = (nbUser <= nbMax);
             } catch (InputMismatchException e){
                 sc.next();
@@ -81,7 +104,7 @@ public class Game{
         int nbToFill = 0;
         StringBuilder nbUserStr = new StringBuilder();
 
-        nbToFill = (game == 1) ? prop.getNbSizeMol() - newNbUser.length() : prop.getNbSizeMd() - newNbUser.length();
+        nbToFill = (game == 1) ? this.prop.getNbSizeMol() - newNbUser.length() : this.prop.getNbSizeMd() - newNbUser.length();
 
         while (i < nbToFill){
             nbUserStr.insert(i,'0');
@@ -95,13 +118,12 @@ public class Game{
         return (nbUserStr.toString());
     }
 
-    public int getMaxForRand(int limit, int nbMax){
+    public long getMaxForRand(int limit, int nbMax){
         StringBuilder nbStr = new StringBuilder();
-
         for (int i = 0; i < limit; i++){
             nbStr.append(Integer.toString(nbMax));
         }
-        return (Integer.valueOf(nbStr.toString()));
+        return (Long.valueOf(nbStr.toString()));
     }
 
     public int getMinForRand(int limit){
@@ -175,20 +197,18 @@ public class Game{
 
     public void initApp(String args[]){
         logger.info("Lancement de l'application");
-        prop = new Property();
 
         //Check if software is running in dev mode
         if (args.length > 0 && args[0].equals("42")){
-            prop.setOneProperty("devMode", "true");
+            this.prop.setOneProperty("devMode", "true");
             DevMode dev = new DevMode();
             dev.initDevMode();
         }else{
-            prop.setOneProperty("devMode", "false");
+            this.prop.setOneProperty("devMode", "false");
         }
 
         //Fill global variables with file properties
-        prop.initProperties();
+        this.prop.initProperties();
         initGame();
     }
 }
-

@@ -6,25 +6,18 @@ public class DefenderMol extends MoreOrLess {
     private int nbSizeMol = getNbSizeMol();
     private int nbTryMol = getNbTryMol();
 
-    public void printEndDefenderMol(int nbTry){
-        if (nbTry == 0){
-            System.out.println("L'ordinateur n'a pas réussi à trouver la combinaison !\n");
-        }else{
-            System.out.println("\nL'ordinateur a trouvé la combinaison en " + (nbTryMol-nbTry) + " coups !\n");
-        }
-    }
-
     public void startDefender(){
         System.out.println("****** But du jeu : L'ordinateur ne doit pas trouver votre combinaison ******\n");
-        int nbMaxRand = getMaxForRand(this.nbSizeMol,9);
-        int nbMinRand = getMinForRand(this.nbSizeMol);
+        long nbMaxRand = getMaxForRand(this.nbSizeMol,9);
+        long nbMinRand = getMinForRand(this.nbSizeMol);
         Scanner sc = new Scanner(System.in);
-        int nbUser = getNbEntry(sc,1, nbMaxRand);
+        long nbUser = getNbEntry(sc,1, nbMaxRand);
         Random random = new Random();
-        int nbComputer = 0;
+        long nbComputer = 0;
         boolean endOfGame;
         int nbTry = this.nbTryMol;
-        String nbUserStr = Integer.toString(nbUser);
+        String nbUserStr = Long.toString(nbUser);
+        long rand = 0;
 
         if (nbUserStr.length() < this.nbSizeMol){
             nbUserStr = fillOfZero(nbUserStr,1);
@@ -33,10 +26,11 @@ public class DefenderMol extends MoreOrLess {
         System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
-            nbComputer = (nbTry == this.nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbUser,nbComputer);
+            rand = (nbMaxRand + ((long)(random.nextDouble()*(nbMaxRand - nbMinRand)))) / 10;
+            nbComputer = (nbTry == this.nbTryMol) ? rand : getComputerNb(nbUser,nbComputer);
             if (nbTry == this.nbTryMol){
                 initTestedNbs();
-                putFirstTestedNb(Integer.toString(nbComputer));
+                putFirstTestedNb(Long.toString(nbComputer));
             }
             endOfGame = checkNbComputer(nbComputer,nbUser,2);
             nbTry -= 1;
@@ -45,7 +39,7 @@ public class DefenderMol extends MoreOrLess {
             }
         }while (!endOfGame);
 
-        printEndDefenderMol(nbTry);
+        printEndDefender(nbTry);
         endOfGame(1,2,sc);
     }
 }

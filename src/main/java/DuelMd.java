@@ -5,28 +5,18 @@ public class DuelMd extends Mastermind {
 
     private int nbSizeMd = getNbSizeMd();
     private int nbTryMd = getNbTryMd();
-    private int[] usableNbs = getUsableNbs();
-
-    public void printEndDuel(int nbToFind, boolean endOfGameComputer, int nbTry){
-        if (nbTry == 0){
-            System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
-        }else{
-            if (endOfGameComputer){
-                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
-            }else{
-                System.out.println("Vous avez battu l'ordinateur, bien joué !\n");
-            }
-        }
-    }
+    private long[] usableNbs = getUsableNbs();
 
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
-        int nbMinRand = getMinForRand(nbSizeMd);
+        System.out.println("usableNbs.lenght = " + usableNbs.length);
+        long nbMaxRand = getMaxForRand(nbSizeMd,usableNbs.length - 1);
+        System.out.println("nbMaRand = " + nbMaxRand);
+        long nbMinRand = getMinForRand(this.nbSizeMd);
         Random random = new Random();
-        int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
+        long nbToFind = (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10;
         Scanner sc = new Scanner(System.in);
-        int nbUser = 0;
-        int nbComputer = 0;
+        long nbUser = 0;
+        long nbComputer = 0;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
         String nbToFindStr = String.valueOf(nbToFind);
@@ -45,8 +35,8 @@ public class DuelMd extends Mastermind {
             if (!endOfGameUser){
                 nbPresentComputer = countNbPresComputer(nbComputer,nbToFind);
                 if (nbPresentComputer == 4){
-                    nbComputerStr = generateNumber(nbToFindStr,Integer.toString(nbComputer));
-                    nbComputer = Integer.parseInt(nbComputerStr);
+                    nbComputerStr = generateNumber(nbToFindStr,Long.toString(nbComputer));
+                    nbComputer = Long.parseLong(nbComputerStr);
                     endOfGameComputer = checkNb(nbComputer,nbToFind,3,2);
                 }else{
                     nbComputer = getComputerNb(nbComputer,nbToFind,3);

@@ -6,27 +6,15 @@ public class DuelMol extends MoreOrLess {
     private int nbSizeMol = getNbSizeMol();
     private int nbTryMol = getNbTryMol();
 
-    public void printEndDuelMol(int nbTry, int nbToFind, boolean endOfGameComputer){
-        if (nbTry == 0){
-            System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
-        }else{
-            if (endOfGameComputer){
-                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
-            }else{
-                System.out.println("Vous avez battu l'ordinateur, bien joué !\n");
-            }
-        }
-    }
-
     public void startDuel(){
-        int nbMaxRand = getMaxForRand(this.nbSizeMol,9);
-        int nbMinRand = getMinForRand(this.nbSizeMol);
+        long nbMaxRand = getMaxForRand(this.nbSizeMol,9);
+        long nbMinRand = getMinForRand(this.nbSizeMol);
         Random random = new Random();
-        int nbToFind = random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand;
+        long nbToFind = (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10;
         Scanner sc = new Scanner(System.in);
-        int nbUser = 0;
+        long nbUser = 0;
+        long nbComputer = 0;
         int nbTry = this.nbTryMol;
-        int nbComputer = 0;
         boolean endOfGameUser = false;
         boolean endOfGameComputer = false;
 
@@ -40,10 +28,10 @@ public class DuelMol extends MoreOrLess {
             nbUser = getNbEntry(sc,1, nbMaxRand);
             endOfGameUser = checkNb(nbUser,nbToFind,1);
             if (!endOfGameUser){
-                nbComputer = (nbTry == this.nbTryMol) ? random.nextInt(nbMaxRand - nbMinRand + 1) + nbMinRand : getComputerNb(nbToFind,nbComputer);
+                nbComputer = (nbTry == this.nbTryMol) ? (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10 : getComputerNb(nbToFind,nbComputer);
                 if (nbTry == this.nbTryMol){
                     initTestedNbs();
-                    putFirstTestedNb(Integer.toString(nbComputer));
+                    putFirstTestedNb(Long.toString(nbComputer));
                 }
                 endOfGameComputer = checkNbComputer(nbComputer,nbToFind,3);
             }
@@ -54,7 +42,7 @@ public class DuelMol extends MoreOrLess {
             }
         } while(!endOfGameUser && !endOfGameComputer);
 
-        printEndDuelMol(nbTry,nbToFind,endOfGameComputer);
+        printEndDuel(nbToFind,endOfGameComputer,nbTry);
         endOfGame(1,3,sc);
     }
 }

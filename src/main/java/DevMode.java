@@ -65,10 +65,10 @@ public class DevMode {
     public void editProperties(Scanner sc){
         int nbUser = 0;
         boolean quit = false;
-        Property prop = new Property();
+        Property prop = Property.getInstance();
 
         while (!quit){
-            Property.getAllProperties();
+            prop.getAllProperties();
             System.out.println("Sélectionnez le paramètre souhaité en entrant le nombre correspondant : ");
             nbUser = getUserChoice(sc,nbUser,1,6);
             if (nbUser < 6){

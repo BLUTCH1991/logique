@@ -5,7 +5,7 @@ import java.util.*;
 
 public class MoreOrLess extends Game{
 
-    private Property prop = super.getProp();
+    private Property prop = Property.getInstance();
     private int nbSizeMol = prop.getNbSizeMol();
     private int nbTryMol = prop.getNbTryMol();
     private String devMode = prop.getDevMode();
@@ -49,7 +49,7 @@ public class MoreOrLess extends Game{
         }
     }
 
-    public boolean checkNbComputer(int nbUser, int nbToFind, int mode){
+    public boolean checkNbComputer(long nbUser, long nbToFind, int mode){
         boolean isCorrect = true;
         String nbToFindStr = String.valueOf(nbToFind);
         String nbUserStr = String.valueOf(nbUser);
@@ -83,7 +83,7 @@ public class MoreOrLess extends Game{
         return (isCorrect);
     }
 
-    public boolean checkNb(int nbUser, int nbToFind, int mode){
+    public boolean checkNb(long nbUser, long nbToFind, int mode){
         boolean isCorrect = true;
         String nbToFindStr = String.valueOf(nbToFind);
         String nbUserStr = String.valueOf(nbUser);
@@ -124,7 +124,7 @@ public class MoreOrLess extends Game{
         return (j);
     }
 
-    public int getNewDigit(int i, int digit, int min, int max){
+    public int getNewDigit(int i, int min, int max){
         int sizeLine = lastNbPosition(i);
         int randomNb = 0;
         boolean isOk = false;
@@ -135,7 +135,7 @@ public class MoreOrLess extends Game{
             randomNb = rand.nextInt(max - min + 1) + min;
             //Look is digit already tested
             for (int j = 0; j < this.testedNbs[i].length; j++){
-                if (this.testedNbs[i][j] != '\0' && randomNb == this.testedNbs[i][j]){
+                if (this.testedNbs[i][j] != 10 && randomNb == this.testedNbs[i][j]){
                     isOk = false;
                 }
             }
@@ -179,8 +179,7 @@ public class MoreOrLess extends Game{
         return res;
     }
 
-    public int getComputerNb(int nbUser, int nbComputer){
-        int digit;
+    public long getComputerNb(long nbUser, long nbComputer){
         String nbUserStr = String.valueOf(nbUser);
         String nbComputerStr = String.valueOf(nbComputer);
         StringBuilder result = new StringBuilder();
@@ -200,18 +199,16 @@ public class MoreOrLess extends Game{
             max = findMaxSign(i);
             min = findMinSign(i);
             if (nbUserStr.charAt(i) > nbComputerStr.charAt(i)){
-                digit = Character.getNumericValue(nbComputerStr.charAt(i));
-                result.append(getNewDigit(i,digit,min,max));
+                result.append(getNewDigit(i,min,max));
             }
             if (nbUserStr.charAt(i) < nbComputerStr.charAt(i)){
-                digit = Character.getNumericValue(nbComputerStr.charAt(i));
-                result.append(getNewDigit(i,digit,min,max));
+                result.append(getNewDigit(i,min,max));
             }
             if (nbUserStr.charAt(i) == nbComputerStr.charAt(i)){
                 result.append(nbUserStr.charAt(i));
             }
         }
-        return (Integer.parseInt(result.toString()));
+        return (Long.parseLong(result.toString()));
     }
 
     public void initTestedNbs(){

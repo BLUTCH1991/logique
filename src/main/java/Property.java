@@ -1,4 +1,3 @@
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +6,9 @@ import java.util.Properties;
 
 public class Property {
 
+    private static final Property instance = new Property();
+    private Property(){}
+
     private int nbSizeMol = 0;
     private int nbSizeMd = 0;
     private int nbTryMol = 0;
@@ -14,8 +16,14 @@ public class Property {
     private String devMode = "";
     private int nbDifferentDigit = 0;
     private static final Logger logger = LogManager.getLogger(Property.class);
+    private Properties prop = new Properties();
+    private InputStream input = null;
 
     /**************** GETTERS ********************/
+
+    public static Property getInstance(){
+        return instance;
+    }
 
     public int getNbSizeMd() {
         return this.nbSizeMd;
@@ -44,12 +52,11 @@ public class Property {
     /**************** METHODS ***********************/
 
     public void initProperties() {
-        Properties prop = new Properties();
         InputStream input = null;
 
         try {
             input = new FileInputStream("./src/main/ressources/config.properties");
-            prop.load(input);
+            this.prop.load(input);
 
             this.nbSizeMol = Integer.valueOf(prop.getProperty("nbSizeMol"));
             this.nbSizeMd = Integer.valueOf(prop.getProperty("nbSizeMd"));
@@ -73,32 +80,28 @@ public class Property {
 
     public void setOneProperty(String key, String value) {
         try {
-            Properties pop = new Properties();
-            pop.load(new FileInputStream("./src/main/ressources/config.properties"));
-            pop.put(key, value);
+            this.prop.load(new FileInputStream("./src/main/ressources/config.properties"));
+            this.prop.put(key, value);
             FileOutputStream output = new FileOutputStream("./src/main/ressources/config.properties");
-            pop.store(output, "");
+            this.prop.store(output, "");
         } catch (IOException ex) {
             logger.error("Error on setOneProperty()");
             ex.printStackTrace();
         }
     }
 
-    public static void getAllProperties() {
-        Properties prop = new Properties();
-        InputStream input = null;
-
+    public void getAllProperties() {
         try {
             input = new FileInputStream("./src/main/ressources/config.properties");
-            prop.load(input);
+            this.prop.load(input);
 
             System.out.println("\n- MASTERMIND -");
-            System.out.println("1) Nombre d'essais : " + prop.getProperty("nbTryMd"));
-            System.out.println("2) Nombre de chiffres de la combinaison : " + prop.getProperty("nbSizeMd"));
-            System.out.println("3) Nombre de chiffres utilisables : " + prop.getProperty("nbDifferentDigit") + "\n");
+            System.out.println("1) Nombre d'essais : " + this.prop.getProperty("nbTryMd"));
+            System.out.println("2) Nombre de chiffres de la combinaison : " + this.prop.getProperty("nbSizeMd"));
+            System.out.println("3) Nombre de chiffres utilisables : " + this.prop.getProperty("nbDifferentDigit") + "\n");
             System.out.println("- PLUS OU MOINS -");
-            System.out.println("4) Nombre d'essais : " + prop.getProperty("nbTryMol"));
-            System.out.println("5) Nombre de chiffres de la combinaison : " +  prop.getProperty("nbSizeMol") + "\n");
+            System.out.println("4) Nombre d'essais : " + this.prop.getProperty("nbTryMol"));
+            System.out.println("5) Nombre de chiffres de la combinaison : " +  this.prop.getProperty("nbSizeMol") + "\n");
             System.out.println("6) Quitter le fichier de configuration\n");
 
         } catch (IOException ex) {
