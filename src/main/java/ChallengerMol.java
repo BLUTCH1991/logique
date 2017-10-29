@@ -10,7 +10,7 @@ public class ChallengerMol extends MoreOrLess {
         long nbMaxRand = getMaxForRand(this.nbSizeMol,9);
         long nbMinRand = getMinForRand(this.nbSizeMol);
         Random random = new Random();
-        long nbToFind = (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10;
+        long nbToFind = nbMinRand + (long)(random.nextDouble()*(nbMaxRand - nbMinRand));
         Scanner sc = new Scanner(System.in);
         long nbUser;
         int nbTry = this.nbTryMol;

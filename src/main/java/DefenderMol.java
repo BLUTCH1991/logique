@@ -26,7 +26,7 @@ public class DefenderMol extends MoreOrLess {
         System.out.println("Vous avez choisi : " + nbUserStr + "\n");
 
         do {
-            rand = (nbMaxRand + ((long)(random.nextDouble()*(nbMaxRand - nbMinRand)))) / 10;
+            rand = nbMinRand + (long)(random.nextDouble()*(nbMaxRand - nbMinRand));
             nbComputer = (nbTry == this.nbTryMol) ? rand : getComputerNb(nbUser,nbComputer);
             if (nbTry == this.nbTryMol){
                 initTestedNbs();

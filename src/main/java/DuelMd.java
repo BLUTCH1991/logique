@@ -13,7 +13,7 @@ public class DuelMd extends Mastermind {
         System.out.println("nbMaRand = " + nbMaxRand);
         long nbMinRand = getMinForRand(this.nbSizeMd);
         Random random = new Random();
-        long nbToFind = (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10;
+        long nbToFind = nbMinRand + (long)(random.nextDouble()*(nbMaxRand - nbMinRand));
         Scanner sc = new Scanner(System.in);
         long nbUser = 0;
         long nbComputer = 0;

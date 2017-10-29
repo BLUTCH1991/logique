@@ -10,7 +10,7 @@ public class DuelMol extends MoreOrLess {
         long nbMaxRand = getMaxForRand(this.nbSizeMol,9);
         long nbMinRand = getMinForRand(this.nbSizeMol);
         Random random = new Random();
-        long nbToFind = (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10;
+        long nbToFind = nbMinRand + (long)(random.nextDouble()*(nbMaxRand - nbMinRand));
         Scanner sc = new Scanner(System.in);
         long nbUser = 0;
         long nbComputer = 0;
@@ -28,7 +28,7 @@ public class DuelMol extends MoreOrLess {
             nbUser = getNbEntry(sc,1, nbMaxRand);
             endOfGameUser = checkNb(nbUser,nbToFind,1);
             if (!endOfGameUser){
-                nbComputer = (nbTry == this.nbTryMol) ? (nbMaxRand +(long)(random.nextDouble()*(nbMaxRand - nbMinRand))) / 10 : getComputerNb(nbToFind,nbComputer);
+                nbComputer = (nbTry == this.nbTryMol) ? nbMinRand + (long)(random.nextDouble()*(nbMaxRand - nbMinRand)) : getComputerNb(nbToFind,nbComputer);
                 if (nbTry == this.nbTryMol){
                     initTestedNbs();
                     putFirstTestedNb(Long.toString(nbComputer));

@@ -34,7 +34,7 @@ public class Game{
             System.out.println("Vous avez perdu et l'ordinateur aussi ! La solution était : " + nbToFind + "\n");
         }else{
             if (endOfGameComputer){
-                System.out.println("L'ordinateur a été plus rapide, dommage !\n");
+                System.out.println("L'ordinateur a été plus rapide, dommage ! La solution était : " + nbToFind + "\n");
             }else{
                 System.out.println("Vous avez battu l'ordinateur, bien joué !\n");
             }
